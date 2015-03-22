@@ -26,6 +26,7 @@ boot:
 clean:
 	rm -rf arch/*.o
 	rm -rf kernel/*.o
+	rm -rf drivers/*.o
 
 .PHONY: mrproper 
 mrproper: clean
