@@ -1,0 +1,113 @@
+ATOMOS Coding Style /* stos's one copy, thanks LSE ! */
+=================
+
+L'indentation se fait exclusivement avec des tabulations de 8 caracteres
+(non expand).
+Exemple :
+	int main(void)
+	{
+		return 42;
+	}
+
+En ce qui concerne le placement des accolades, ces dernieres
+apparaissent en fin de ligne, sauf dans les declarations de fonctions,
+ou elles apparaissent en debut de ligne.
+Dans le cas d'une boucle vide (par exemple, en fin de kernel) il faudra
+mettre un "continue;" tout seul sur sa ligne.
+Ceci est valide :
+	while (42)
+		continue;
+Ceci ne l'est pas :
+	while (69);
+	while (69)
+		;
+Dans le cas ou le contenu des accolades ne fait qu'une seule ligne, nous
+les supprimeront.
+Exemple :
+	while (42)
+		printf("Hello !\n");
+Dans le cas d'un if-statement, on ne pourra supprimer les accolades que
+si les deux alternatives ne font qu'une ligne.
+Ceci est valide :
+	if (condition)
+		return 1;
+	else
+		return 0;
+Ceci ne l'est pas :
+	if (condition)
+		return 1;
+	else {
+		printf("Error !\n");
+		return 0;
+	}
+
+En ce qui concerne le switch et pour eviter une double indentation :
+	switch (value) {
+	case 1:
+	case 2:
+	default:
+	}
+
+Au niveau du placement des parentheses, celles-ci sont collees a la
+fonction et detachees du mot cle.
+
+Pas d'espace entre la parenthese ouvrante et son contenu, idem pour la
+parenthese fermante. Pour les operateurs, il s'agit de placer un espace
+autour des operateurs binaires et ternaires, mais aucuns entre pour les
+operateurs unaires. Les operateurs prefix et postfix d'incrementation
+decrementations sont egalement colles a la variable.
+
+La position de l'operateur '*' lorsqu'il s'agit d'un pointeur doit etre
+colle au type lors d'une declaration, pas a la variable.
+Il sera par ailleurs interdit de declarer des variables en melangeant
+pointeurs et variables standard d'une maniere qui peut pretter a
+confusion.
+Ceci est par exemple interdit :
+	int* a, b;
+
+Les trailings whitespace sont bien entendu interdits.
+
+De la meme maniere, le code ne devra pas depasser 80 colones. Il est de
+bon ton de remarquer qu'une fonction qui s'etale trop, aussi bien en
+largeur qu'en hauteur, indique souvent un probleme plus general dans
+l'architecture du code.
+
+Les conventions de nomages sont relativement simple, les noms de
+variables/fonctions/whatever sont exclusivement compose de lettres
+minuscules et du caractere '_' comme separateur.
+
+Les commentaires sont de la forme classique :
+	/*
+	 * This is a comment.
+	 * It can contain multiple lines.
+	 */
+Ils sont bien entendu en anglais. Si un commentaire est suffisament
+court pour tenir sur une seule ligne, il pourra etre exprime de la
+maniere suivante :
+	/* This is a single-line comment. */
+Les commentaires C99 sont interdits.
+
+Les commentaires de description de fonction auront cette forme:
+	/**
+	 * General description.
+	 * @arg1: meaning of arg1.
+	 * @arg2: meaning of arg2.
+	 * @return: meaning of return value.
+	 */
+
+Il conviendra bien entendu de proteger les macros par un
+	do {
+		...
+	} while (0)
+si necessaire.
+
+L'utilisation de fonction inline sera preferee a la creation de macros,
+celles-ci sont mieux typees et ne seront pas necessairement inline si le
+compilateur estime que ce n'est pas necessaire.
+
+Enfin, chaque fichier contiendra un header ayant cette forme :
+	/*
+	 * File: toto.c
+	 * Author: John Doe <john@doe.com>
+	 * Description: This is a sample in the coding style.
+	 */
