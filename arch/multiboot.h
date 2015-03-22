@@ -18,36 +18,9 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-/* Macros.  */
-
-/* The magic number for the Multiboot header.  */
-#define MULTIBOOT_HEADER_MAGIC		0x1BADB002
-
-/* The flags for the Multiboot header.  */
-#define MULTIBOOT_HEADER_FLAGS		0x00010003
-
-/* The magic number passed by a Multiboot-compliant boot loader.  */
-#define MULTIBOOT_BOOTLOADER_MAGIC	0x2BADB002
-
-/* The size of our stack (16KB).  */
-#define MULTIBOOT_STACK_SIZE	        0x4000
-
-#define MULTIBOOT_CMDLINE 4
-#define MULTIBOOT_MODS 8
-
-/* C symbol format. HAVE_ASM_USCORE is defined by configure.  */
-#ifdef HAVE_ASM_USCORE
-# define EXT_C(sym)			_ ## sym
-#else
-# define EXT_C(sym)			sym
-#endif
-
-#ifndef ASM
-/* Do not include here in boot.S.  */
-
-
 
 /* Types.  */
+#define MULTIBOOT_BOOTLOADER_MAGIC 0x2BADB002
 
 /* The Multiboot header.  */
 typedef struct multiboot_header
@@ -123,7 +96,5 @@ typedef struct memory_map
 } memory_map_t;
 
 void dump_multiboot_info(multiboot_info_t *mbi);
-
-#endif /* ! ASM */
 
 #endif /* __MULTIBOOT_H__ */

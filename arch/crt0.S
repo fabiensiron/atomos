@@ -1,4 +1,4 @@
-#define MAGIC 0x2BADB002
+#define MAGIC 0x1badb002
 #define FLAGS 0x7
 
 .section .multiboot
@@ -7,9 +7,8 @@
   .long FLAGS
   .long -(MAGIC + FLAGS)
 
-.text
 
-.globl kernel_entry
+.global kernel_entry
 kernel_entry:
   push %ebx /* multiboot_info_t* */
   push %eax /* magic */

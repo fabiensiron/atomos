@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -m32 -Wall -nostdlib -nostdinc -std=c99 -ffreestanding 
-LDFLAGS = -nostdlib -m32 -L include 
+CFLAGS = -m32 -Wall -Wextra -nostdlib -nostdinc -std=c99 
+LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
 SRC = kernel/main.c
 ASM = arch/crt0.S
@@ -10,7 +10,7 @@ PWD := $(shell pwd)
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ) $(LINK_SCRIPT)
+$(TARGET): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS) -T $(LINK_SCRIPT)
 
 %.o: %.c
@@ -19,11 +19,14 @@ $(TARGET): $(OBJ) $(LINK_SCRIPT)
 %.o: %.S
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
+boot:
+	./qemu_boot.sh
+
 .PHONY: clean
 clean:
 	rm -rf arch/*.o
 	rm -rf kernel/*.o
 
 .PHONY: mrproper 
-mrproper:
+mrproper: clean
 	rm -rf $(TARGET)

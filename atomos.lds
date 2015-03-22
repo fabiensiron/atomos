@@ -20,10 +20,4 @@ SECTIONS
   {
     *(.data) *(.bss) *(COMMON)
   }
-  /DISCARD/ :{
-    *(.note*)
-    *(.indent)
-    *(.stab)
-    *(.stabstr)
-  }
 }

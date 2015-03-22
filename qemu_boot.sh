@@ -6,4 +6,5 @@ print_usage (){
 
 ################################
 
-print_usage
+# print_usage
+qemu-system-i386 -kernel ATOMOS
