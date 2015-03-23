@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -m32 -Wall -Wextra -nostdlib -nostdinc -std=c99 
 LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
-SRC = kernel/main.c drivers/vga_text.c 
+SRC = arch/pm.c kernel/main.c drivers/vga_text.c 
 ASM = arch/crt0.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
 LINK_SCRIPT = atomos.lds

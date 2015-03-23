@@ -1,5 +1,7 @@
 #include <arch/multiboot.h>
+#include <arch/pm.h>
 #include <drivers/vga_text.h>
+
 
 void kernel_main (unsigned long magic, multiboot_info_t* info) {
   set_bg_color (BLUE); 
@@ -7,7 +9,10 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   clear_screen ();
 
-  boot_message ();
+  switch_to_pm ();
+  write_text_vga ("gdt loaded!\n");
+
+  /*boot_message (); */
   
 
   for (;;)
