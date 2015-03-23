@@ -6,8 +6,8 @@
 int itoa (int n, char* str);
 int atoi (char* str);
 
-void* memset (void*, int, unsigned int);
+void* memset (void*, int, size_t);
 int memcmp (const void*, const void*, size_t);
-void* memcpy (void*, const void*, unsigned int);
+void* memcpy (void*, const void*, size_t);
 
 #endif /* _STDLIB_H */

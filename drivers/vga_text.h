@@ -45,6 +45,7 @@ static void scroll_down ();
 extern void write_text_vga (char* str);
 extern void set_cursor (int r, int c);
 extern void clear_screen ();
+extern void fill_screen ();
 extern void set_fg_color (text_color_e);
 extern void set_bg_color (text_color_e);
 extern void boot_message ();

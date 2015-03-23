@@ -27,3 +27,12 @@ extern void write_text_vga (char* str) {
   for (i = 0; i!= '\0'; i++)
     write_char (str[i]);
 }
+
+extern void clear_screen () {
+  int i;
+  for (int i =TEXT_FRAMEBUFFER_START; i < TEXT_FRAMEBUFFER_END; i++)
+  {
+    u8* addr = (u8*)i;
+    *addr = 0;
+  }
+}
