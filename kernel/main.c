@@ -2,11 +2,13 @@
 #include <drivers/vga_text.h>
 
 void kernel_main (unsigned long magic, multiboot_info_t* info) {
-  char* str = ("welcome \n in \n \n \n \n \n ATOMOS !!!");
+  set_bg_color (BLUE); 
+  set_fg_color (WHITE);
 
   clear_screen ();
 
-  write_text_vga (str);
+  boot_message ();
+  
 
   for (;;)
     continue;
