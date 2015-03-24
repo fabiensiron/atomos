@@ -7,7 +7,7 @@ a userland Virtual-Machine like Dalvik (Android).
 
 
 ### How to run it? ###
-*dependencies: Qemu
+dependencies: Qemu
 
 ```
 #!shell
@@ -21,3 +21,5 @@ make boot
 
 
 ### Bug report ###
+
+irc: irc.rezosup.org channel: #atomOS
