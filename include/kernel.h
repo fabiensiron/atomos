@@ -18,4 +18,6 @@ typedef long long          s64;
 
 typedef enum {FALSE = 0, TRUE} atomos_bool_t;
 
+void panic (const char* msg);
+
 #endif /* _KERNEL_H */
