@@ -10,6 +10,7 @@
 typedef unsigned int size_t;
 #endif
 
+extern char* reverse (const char*);
 extern char* strcpy (char*, const char*);
 extern char* strcat (char*, const char*);
 extern int strcmp (const char*, const char*);
