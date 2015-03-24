@@ -45,8 +45,18 @@ extern void clear_screen () {
 extern void set_fg_color (text_color_e c_) {text_color.fg = c_;}
 extern void set_bg_color (text_color_e c_) {text_color.bg = c_;}
 extern void set_cursor (u64 r_, u64 c_) {cursor.c = c_; cursor.r = c_;};
-extern void fill_screen () {
-  /* TODO */
+
+extern void fill_screen (text_color_e bg_) {
+  int i;
+  for (int i =TEXT_FRAMEBUFFER_START; i < TEXT_FRAMEBUFFER_END; i+=2)
+  {
+    u8* addr = (u8*)i;
+    *addr = ' ';
+    *(addr+1) = (u8)(bg_ << 4) + text_color.fg;
+  }
+  text_color.bg = bg_;
+  cursor.c = 0;
+  cursor.r = 0;
 }
 
 extern void boot_message () {
