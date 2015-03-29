@@ -1,13 +1,23 @@
 #include <include/string.h>
 
-extern char* reverse (const char* str_) {
-  int len = strlen (str_);
-  char output[len]; 
+extern char* strcpy (char* dest, const char* src) {
+  char* p = NULL;
 
-  for (int i = len -1; len >= 0; i--) {
+  for (p = dest; *src != '\0'; p++, src++)
+    *p = *src;
 
+  *p = '\0';
 
-  }
+  return dest;
+}
+
+extern int strcmp(const char* str1, const char* str2) {
+  char* p = NULL;
+
+  while (*str1 != '\0' && (*str1++ == *str2++));
+  if ((*(unsigned char*)--str1) < (*(unsigned char*)--str2))
+    return -1;
+  return (*(unsigned char*)str1 != *(unsigned char*)str2);
 }
 
 extern int strlen (const char* str_) {
@@ -16,4 +26,5 @@ extern int strlen (const char* str_) {
   for (i = 0; str_[i] != '\0'; i++) 
     ++output;   
 }
+
 
