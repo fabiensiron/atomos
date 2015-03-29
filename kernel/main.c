@@ -1,7 +1,9 @@
 #include <arch/multiboot.h>
 #include <arch/pm.h>
+#include <arch/interrupt.h>
 #include <drivers/vga_text.h>
 #include <include/kernel.h>
+#include <include/string.h>
 
 
 void kernel_main (unsigned long magic, multiboot_info_t* info) {
@@ -10,9 +12,15 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   clear_screen ();
 
+  write_text_vga ("load gdt...\n");
   switch_to_pm ();
- // load_gdt();
   write_text_vga ("gdt loaded!\n"); 
+
+  write_text_vga ("load idt...\n");
+  init_interrupts ();
+  write_text_vga ("idt loaded!\n");
+
+  write_text_vga ("\n");
 
   boot_message (); 
  /* 
