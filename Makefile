@@ -9,7 +9,7 @@ SRC = arch/pm.c \
 			drivers/vga_text.c \
 			lib/string.c \
 			lib/stdlib.c 
-ASM = arch/crt0.S
+ASM = arch/crt0.S arch/interrupt_handler.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
 LINK_SCRIPT = atomos.lds
 PWD := $(shell pwd)

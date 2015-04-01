@@ -1,0 +1,34 @@
+#ifndef _EXCEPTION_H
+#define _EXCEPTION_H
+
+#define EXCEPTION_DIVIDE_ERROR     0
+#define EXCEPTION_DEBUG            1
+#define EXCEPTION_NMI              2
+#define EXCEPTION_BREAKPOINT       3
+#define EXCEPTION_OVERFLOW         4
+#define EXCEPTION_BOUND_RANGE      5
+#define EXCEPTION_INVALID_OPCODE   6
+#define EXCEPTION_NOT_AVALABLE     7
+#define EXCEPTION_DOUBLE_FAULT     8
+#define EXCEPTION_COPROC_OVERRUN   9 /* deprecated */
+#define EXCEPTION_INVALID_TSS     10
+#define EXCEPTION_NO_SEGMENT      11
+#define EXCEPTION_STACK_FAULT     12
+#define EXCEPTION_GENERAL_FAULT   13
+#define EXCEPTION_PAGE_FAULT      14
+#define EXCEPTION_RESERVED0       15
+#define EXCEPTION_X87_FLOAT       16
+#define EXCEPTION_ALIGNMENT_CHECK 17
+#define EXCEPTION_MACHINE_CHECK   18
+#define EXCEPTION_SIMD_FLOAT      19
+#define EXCEPTION_VIRTUALIZATION  20
+#define EXCEPTION_RESERVED2       21
+#define EXCEPTION_SECURITY        22
+#define EXCEPTION_RESERVED3       23
+#define EXCEPTION_TRIPLE_FAULT    24
+#define EXCEPTION_FPU_INTERRUPT   25 /* depracated */
+
+extern void exception_init (void);
+
+
+#endif /* _EXCEPTION_H */
