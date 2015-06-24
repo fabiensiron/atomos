@@ -2,6 +2,8 @@
 #include <arch/pm.h>
 #include <arch/interrupt.h>
 #include <drivers/vga_text.h>
+#include <drivers/8259.h>
+#include <arch/ioport.h>
 #include <include/kernel.h>
 #include <include/string.h>
 
@@ -19,6 +21,15 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   write_text_vga ("load idt...\n");
   init_interrupts ();
   write_text_vga ("idt loaded!\n");
+
+  write_text_vga ("init pic...\n");
+  pic_init ();
+  write_text_vga ("pic init!\n");
+
+  STI;
+
+  // test trap 
+  int a = 4 / 0;
 
   write_text_vga ("\n");
 
