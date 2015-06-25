@@ -89,15 +89,16 @@ static void load_gdt () {
 
 extern void switch_to_pm () {
   load_gdt ();
-
+/*
   __asm__ volatile (
-    "movl %%cr0, %%eax\n\
+    "cli \n\
+    movl %%cr0, %%eax\n\
     orl $1, %%eax\n\
     movl %%eax, %%cr0\n"
     :
     :
     : "eax"
     );
-
+*/
   load_segments ();
 }

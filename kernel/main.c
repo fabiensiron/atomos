@@ -31,7 +31,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   write_text_vga ("set interrupts\n");
 
   // test trap 
-//  int a = 4 / 0;
+ // int a = 4 / 0;
 
   write_text_vga ("\n");
 
