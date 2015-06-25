@@ -39,8 +39,8 @@ static struct {
 #define NB_ROWS 25
 #define NB_COLUMNS 80
 
-static void write_char (char c);
-static void scroll_down ();
+// static void write_char (char c);
+// static void scroll_down ();
 
 extern void write_text_vga (char* str);
 extern void set_cursor (u64 r, u64 c);

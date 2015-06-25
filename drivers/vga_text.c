@@ -31,7 +31,6 @@ extern void write_text_vga (char* str) {
 }
 
 extern void clear_screen () {
-  int i;
   for (int i =TEXT_FRAMEBUFFER_START; i < TEXT_FRAMEBUFFER_END; i+=2)
   {
     u8* addr = (u8*)i;
@@ -47,7 +46,6 @@ extern void set_bg_color (text_color_e c_) {text_color.bg = c_;}
 extern void set_cursor (u64 r_, u64 c_) {cursor.c = c_; cursor.r = c_;};
 
 extern void fill_screen (text_color_e bg_) {
-  int i;
   for (int i =TEXT_FRAMEBUFFER_START; i < TEXT_FRAMEBUFFER_END; i+=2)
   {
     u8* addr = (u8*)i;
