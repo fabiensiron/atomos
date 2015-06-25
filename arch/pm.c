@@ -25,7 +25,7 @@ typedef struct gdt_entry_s {
 #define MAKE_SELECTOR(index, ti, rpl) \
   ( \
     (index << 3) | \
-    ((ti & 0x1) << 2) | \
+    (((ti)?1:0) << 2) | \
     (rpl & 0x3) \
   ) 
 
@@ -47,17 +47,17 @@ static void load_segments () {
   ((gdt_entry_t){ \
     .limit0_15 = limit & 0xffff, \
     .base0_15 = base & 0xffff, \
-    .base16_23 = (base & 0xff0000) >> 16, \
+    .base16_23 = (base >> 16) & 0xff, \
     .type = ((code)? 0xb : 0x3), \
     .dtype = 1, \
     .dpl = (privilege & 0x3), \
     .present = 1, \
-    .limit16_19 = (limit & 0xf0000) >> 16, \
+    .limit16_19 = (limit >> 16) & 0xf, \
     .avl = 0, \
     .l = 0, \
     .dsize = 1, \
     .granularity = 1, \
-    .base24_31 = (base & 0xff00000) >> 24 \
+    .base24_31 = (base >> 24) & 0xff \
    })
 
 typedef struct {

@@ -22,11 +22,11 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   init_interrupts ();
   write_text_vga ("idt loaded!\n");
 
-  write_text_vga ("init pic...\n");
+/*  write_text_vga ("init pic...\n");
   pic_init ();
   write_text_vga ("pic init!\n");
-
-  STI;
+*/
+ // STI;
 
   write_text_vga ("set interrupts\n");
 

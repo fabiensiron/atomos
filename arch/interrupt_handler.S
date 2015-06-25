@@ -3,14 +3,12 @@
 .globl zero_handler
 zero_handler:
   prout:
+    hlt
     jmp prout
 
   pusha
-  
   call error_isr
-
   popa
-
   iret
 
 .globl double_fault_handler
