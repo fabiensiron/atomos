@@ -2,7 +2,7 @@
 #include <arch/pm.h>
 #include <arch/interrupt.h>
 #include <drivers/vga_text.h>
-#include <drivers/8259.h>
+#include <drivers/i8259.h>
 #include <arch/ioport.h>
 #include <include/kernel.h>
 #include <include/string.h>
@@ -27,6 +27,8 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   write_text_vga ("pic init!\n");
 
   STI;
+
+  write_text_vga ("set interrupts\n");
 
   // test trap 
 //  int a = 4 / 0;

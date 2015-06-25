@@ -7,7 +7,7 @@ SRC = arch/pm.c \
 			kernel/main.c \
 			kernel/panic.c \
 			drivers/vga_text.c \
-			drivers/8259.c \
+			drivers/i8259.c \
 			lib/string.c \
 			lib/stdlib.c 
 ASM = arch/crt0.S arch/interrupt_handler.S
