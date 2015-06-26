@@ -2,10 +2,6 @@
 
 .globl zero_handler
 zero_handler:
-  prout:
-    hlt
-    jmp prout
-
   pusha
   call error_isr
   popa

@@ -31,14 +31,17 @@ typedef struct gdt_entry_s {
 
 static void load_segments () {
   __asm__ volatile (
-    "ljmp %0, $1f \n\
-    1: \n\
-    movw %1, %%ax \n\
+    "movw %0, %%ax \n\
+    movw %%ax, %%ds \n \
+    movw %%ax, %%es \n \
+    movw %%ax, %%fs \n \
+    movw %%ax, %%gs \n \
     movw %%ax, %%ss \n\
-    movw %%ax, %%ds \n"
+    ljmp %1, $1f \n\
+    1:"
     :
-    : "i"(MAKE_SELECTOR (KERNEL_CODE_SEGMENT, 0, 0)), 
-      "i"(MAKE_SELECTOR (KERNEL_DATA_SEGMENT, 0, 0))
+    : "i"(MAKE_SELECTOR(KERNEL_DATA_SEGMENT, 0, 0)), 
+      "i"(MAKE_SELECTOR(KERNEL_CODE_SEGMENT, 0, 0))
     :"eax"
     );
 }
@@ -48,7 +51,7 @@ static void load_segments () {
     .limit0_15 = limit & 0xffff, \
     .base0_15 = base & 0xffff, \
     .base16_23 = (base >> 16) & 0xff, \
-    .type = ((code)? 0xb : 0x3), \
+    .type = ((code)? 0xa : 0x2), \
     .dtype = 1, \
     .dpl = (privilege & 0x3), \
     .present = 1, \
@@ -65,15 +68,16 @@ typedef struct {
   u32 base;
 } __attribute__((packed,aligned(8))) gdt_t;
 
+struct gdt_entry_s gdt[3];
 
 static void load_gdt () {
 
-  struct gdt_entry_s gdt[5];
   gdt[NULL_SEGMENT] = (struct gdt_entry_s){0,};
+
   gdt[KERNEL_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 1);
   gdt[KERNEL_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 0); 
-  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
-  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
+//  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
+//  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
 
   gdt_t gdt_desc;
   gdt_desc.limit = sizeof (gdt) -1;
@@ -88,8 +92,6 @@ static void load_gdt () {
 }
 
 extern void switch_to_pm () {
-  load_gdt ();
-/* 
   __asm__ volatile (
     "movl %%cr0, %%eax\n\
     orl $1, %%eax\n\
@@ -98,6 +100,8 @@ extern void switch_to_pm () {
     :
     : "eax"
     );
+  load_gdt ();
+/* 
 */
   load_segments ();
 }

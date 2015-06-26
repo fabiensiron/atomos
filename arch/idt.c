@@ -100,9 +100,9 @@ static void load_idt () {
 
 
 extern void init_interrupts () {
+  pic_init ();
   load_idt();
   // idt_entry [EXCEPTION_DIVIDE_ERROR] = ADD_IDT_ENTRY((u32)zero_handler, 0x8);
-  pic_init ();
 
   set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)zero_handler, 0x8);
   set_idt_handler (EXCEPTION_DOUBLE_FAULT, (u32)double_fault_handler, 0x8);
@@ -111,4 +111,6 @@ extern void init_interrupts () {
 
 extern void error_isr () {
   write_text_vga ("prout");  
+  for (;;)
+    continue;
 }

@@ -15,7 +15,8 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   clear_screen ();
 
   write_text_vga ("load gdt...\n");
-  switch_to_pm ();
+ switch_to_pm ();
+ // load_gdt ();
   write_text_vga ("gdt loaded!\n"); 
 
   write_text_vga ("load idt...\n");

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -m32 -Wall -Wextra -nostdlib -nostdinc -std=c99
+CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99
 LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
 SRC = arch/pm.c \
@@ -27,7 +27,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	./qemu_boot.sh
+	./qemu_boot.sh --qemu
 
 .PHONY: clean
 clean:
