@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -m32 -Wall -Wextra -nostdlib -nostdinc -std=c99 -fno-stack-protector -fno-builtin 
+CFLAGS = -m32 -Wall -Wextra -nostdlib -nostdinc -std=c99
 LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
 SRC = arch/pm.c \

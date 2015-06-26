@@ -20,7 +20,7 @@ typedef struct gdt_entry_s {
   u8 dsize: 1;
   u8 granularity: 1;
   u8 base24_31;
-} __attribute__((packed)) gdt_entry_t;
+} __attribute__((packed,aligned(8))) gdt_entry_t;
 
 #define MAKE_SELECTOR(index, ti, rpl) \
   ( \
@@ -63,7 +63,7 @@ static void load_segments () {
 typedef struct {
   u16 limit;
   u32 base;
-} __attribute__((packed)) gdt_t;
+} __attribute__((packed,aligned(8))) gdt_t;
 
 
 static void load_gdt () {
@@ -89,10 +89,9 @@ static void load_gdt () {
 
 extern void switch_to_pm () {
   load_gdt ();
-/*
+/* 
   __asm__ volatile (
-    "cli \n\
-    movl %%cr0, %%eax\n\
+    "movl %%cr0, %%eax\n\
     orl $1, %%eax\n\
     movl %%eax, %%cr0\n"
     :

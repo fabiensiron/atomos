@@ -63,10 +63,10 @@ static void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
     idt->offset0_15 = 0;
     idt->offset16_31 = 0;
     idt->present = 0;
-    idt->segment_selector = seg_sel;
+    idt->dpl = 0; 
   } else {
     idt->offset0_15 = handler & 0xffff;
-    idt->segment_selector = seg_sel;
+    idt->dpl = 0;
     idt->present = 1;
     idt->offset16_31 = (handler >> 16) & 0xffff;
   }
