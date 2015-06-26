@@ -107,6 +107,4 @@ extern void init_interrupts () {
 
 extern void error_isr (u8 error) {
   write_text_vga ("prout");  
-  for (;;)
-    continue;
 }
