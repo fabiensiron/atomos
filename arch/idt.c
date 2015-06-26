@@ -23,39 +23,11 @@ struct idt_s {
   u32 base;
 } __attribute__((packed, aligned(8))) idt_t;
 
-#define ADD_IDT_ENTRY(offset,seg_sel) \
-  ((struct idt_interrupt_gate_s){ \
-    .offset0_15 = offset & 0xffff, \
-    .segment_selector = seg_sel, \
-    .reserved = 0, \
-    .flags = 0, \
-    .type = 0x6, \
-    .op_size = 1, \
-    .zero = 0, \
-    .dpl = 0, \
-    .present = 1, \
-    .offset16_31 = (offset >> 16) & 0xffff \
-  })
-
-#define NULL_ENTRY \
-  ((struct idt_interrupt_gate_s){ \
-    .offset0_15 = 0, \
-    .segment_selector = 0x8, \
-    .reserved = 0, \
-    .flags = 0, \
-    .type = 0x6, \
-    .op_size = 1, \
-    .zero = 0, \
-    .dpl = 0, \
-    .present = 0, \
-    .offset16_31 = 0 \
-   })
-
 static struct idt_interrupt_gate_s idt_entry[SIZE_IDT];
 
-void double_fault_handler (void);
-void zero_handler (void);
-
+void critical_exception (void);
+void no_error_wrapper (void);
+void error_wrapper (void);
 
 static void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
   struct idt_interrupt_gate_s* idt = idt_entry + index;
@@ -104,12 +76,36 @@ extern void init_interrupts () {
   load_idt();
   // idt_entry [EXCEPTION_DIVIDE_ERROR] = ADD_IDT_ENTRY((u32)zero_handler, 0x8);
 
-  set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)zero_handler, 0x8);
-  set_idt_handler (EXCEPTION_DOUBLE_FAULT, (u32)double_fault_handler, 0x8);
+  set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_DEBUG, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_NMI, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_BREAKPOINT, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_OVERFLOW, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_BOUND_RANGE, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_INVALID_OPCODE, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_NOT_AVAILABLE, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_DOUBLE_FAULT, (u32)critical_exception, 0x8);
+  set_idt_handler (EXCEPTION_COPROC_OVERRUN, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_INVALID_TSS, (u32)error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_NO_SEGMENT, (u32)error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_STACK_FAULT, (u32)error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_GENERAL_FAULT, (u32)error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_PAGE_FAULT, (u32)error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_RESERVED0, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_X87_FLOAT, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_ALIGNMENT_CHECK, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_MACHINE_CHECK, (u32)critical_exception, 0x8);
+  set_idt_handler (EXCEPTION_SIMD_FLOAT, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_VIRTUALIZATION, (u32)no_error_wrapper, 0x8);
+  /* RESERVED 21 to 29 */
+  for (int i = 21; i< 30; i++)
+    set_idt_handler (i, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_SECURITY, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_RESERVED3, (u32)no_error_wrapper, 0x8);
   STI;
 }
 
-extern void error_isr () {
+extern void error_isr (u8 error) {
   write_text_vga ("prout");  
   for (;;)
     continue;

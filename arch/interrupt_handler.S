@@ -1,15 +1,23 @@
 .extern error_isr
+.extern panic 
 
-.globl zero_handler
-zero_handler:
+.globl no_error_wrapper
+no_error_wrapper:
+  pusha
+  push $0
+  call error_isr
+  add $0x04, %esp
+  popa
+  iret
+
+.globl error_wrapper
+error_wrapper:
   pusha
   call error_isr
   popa
   iret
 
-.globl double_fault_handler
-double_fault_handler:
-  1: 
-    hlt
-    jmp 1b
-
+.globl critical_exception
+critical_exception:
+  push $0
+  call panic

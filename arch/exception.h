@@ -8,7 +8,7 @@
 #define EXCEPTION_OVERFLOW         4
 #define EXCEPTION_BOUND_RANGE      5
 #define EXCEPTION_INVALID_OPCODE   6
-#define EXCEPTION_NOT_AVALABLE     7
+#define EXCEPTION_NOT_AVAILABLE    7
 #define EXCEPTION_DOUBLE_FAULT     8
 #define EXCEPTION_COPROC_OVERRUN   9 /* deprecated */
 #define EXCEPTION_INVALID_TSS     10
@@ -22,11 +22,8 @@
 #define EXCEPTION_MACHINE_CHECK   18
 #define EXCEPTION_SIMD_FLOAT      19
 #define EXCEPTION_VIRTUALIZATION  20
-#define EXCEPTION_RESERVED2       21
-#define EXCEPTION_SECURITY        22
-#define EXCEPTION_RESERVED3       23
-#define EXCEPTION_TRIPLE_FAULT    24
-#define EXCEPTION_FPU_INTERRUPT   25 /* depracated */
+#define EXCEPTION_SECURITY        30
+#define EXCEPTION_RESERVED3       31
 
 extern void exception_init (void);
 

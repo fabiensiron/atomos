@@ -11,6 +11,6 @@ extern void init_interrupts ();
 extern void exception_handler ();
 extern void interrupt_handler ();
 
-extern void error_isr ();
+extern void error_isr (u8);
 
 #endif /* _IDT_H */
