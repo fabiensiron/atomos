@@ -16,7 +16,9 @@ typedef short              s16;
 typedef int                s32;
 typedef long long          s64;
 
-typedef enum {FALSE = 0, TRUE} atomos_bool_t;
+typedef unsigned char bool_t;
+#define TRUE 1
+#define FALSE 0
 
 void panic (const char* msg);
 

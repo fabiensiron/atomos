@@ -1,6 +1,7 @@
 #include <arch/multiboot.h>
 #include <arch/pm.h>
-#include <arch/interrupt.h>
+#include <arch/idt.h>
+#include <arch/exception.h>
 #include <drivers/vga_text.h>
 #include <drivers/i8259.h>
 #include <arch/ioport.h>
@@ -14,26 +15,27 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   clear_screen ();
 
-//  write_text_vga ("load gdt...\n");
- switch_to_pm ();
- // load_gdt ();
- // write_text_vga ("gdt loaded!\n"); 
+  /* set 32-bits intel protected mode */
+  switch_to_pm ();
 
- // write_text_vga ("load idt...\n");
-  init_interrupts ();
- // write_text_vga ("idt loaded!\n");
+  /* init the i8259 (interrupt controller) */
+  pic_init ();
 
+  /* set-up the idt */
+  load_idt ();
 
- // write_text_vga ("set interrupts\n");
+  /* init exceptions */
+  exception_init ();
+
+  /* set interrupts up */
+  STI;
 
   // test trap 
-//  int a = 4 / 0;
+  // int a = 4 / 0;
 
   write_text_vga ("\n");
 
   boot_message (); 
- /* 
-  panic (""); */
 
   for (;;)
     continue;

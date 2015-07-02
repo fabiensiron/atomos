@@ -1,9 +1,5 @@
-#include "interrupt.h"
-#include "exception.h"
-#include "include/stdlib.h"
-#include "drivers/vga_text.h"
+#include "idt.h"
 
-#define SIZE_IDT 48
 
 struct idt_interrupt_gate_s {
   u16 offset0_15;
@@ -25,11 +21,11 @@ struct idt_s {
 
 static struct idt_interrupt_gate_s idt_entry[SIZE_IDT];
 
-void critical_exception (void);
-void no_error_wrapper (void);
-void error_wrapper (void);
+// void critical_exception (void);
+// void no_error_wrapper (void);
+// void error_wrapper (void);
 
-static void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
+extern void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
   struct idt_interrupt_gate_s* idt = idt_entry + index;
   if (handler == (u32)NULL) {
     idt->offset0_15 = 0;
@@ -44,7 +40,7 @@ static void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
   }
 }
 
-static void load_idt () {
+extern void load_idt () {
     for (int i=0; i<SIZE_IDT; i++) 
     {
       struct idt_interrupt_gate_s* idt = idt_entry +i;
@@ -72,11 +68,12 @@ static void load_idt () {
 
 
 extern void init_interrupts () {
-  pic_init ();
+//  pic_init (); // for sure, this not very clever
   load_idt();
   // idt_entry [EXCEPTION_DIVIDE_ERROR] = ADD_IDT_ENTRY((u32)zero_handler, 0x8);
 
-  set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)no_error_wrapper, 0x8);
+  /* too clever, change every exceptions -> critical_exception (kernel panic) */
+   set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)critical_exception, 0x8);
   set_idt_handler (EXCEPTION_DEBUG, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_NMI, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_BREAKPOINT, (u32)no_error_wrapper, 0x8);
@@ -98,13 +95,14 @@ extern void init_interrupts () {
   set_idt_handler (EXCEPTION_SIMD_FLOAT, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_VIRTUALIZATION, (u32)no_error_wrapper, 0x8);
   /* RESERVED 21 to 29 */
-  for (int i = 21; i< 30; i++)
+   for (int i = 21; i< 30; i++)
     set_idt_handler (i, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_SECURITY, (u32)no_error_wrapper, 0x8);
-  set_idt_handler (EXCEPTION_RESERVED3, (u32)no_error_wrapper, 0x8);
-  STI;
+  set_idt_handler (EXCEPTION_RESERVED3, (u32)no_error_wrapper, 0x8); 
 }
 
 extern void error_isr (u8 error) {
   write_text_vga ("prout");  
+  for (;;)
+    continue;
 }

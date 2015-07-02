@@ -1,14 +1,15 @@
 #ifndef _IOPORT_H
 #define _IOPORT_H
 
-#define INB(data, port) ({ \
+#define INB(port) ({ \
     unsigned char _v; \
     __asm__ volatile ( \
       "inb %w1, %0\n" \
       : "=a" (_v)  \
       : "Nd" (port)  \
       :   \
-    )     \
+    );     \
+    _v;   \
   })
 
 #define OUTB(data, port)  \

@@ -25,6 +25,8 @@
 #define EXCEPTION_SECURITY        30
 #define EXCEPTION_RESERVED3       31
 
+#include <arch/idt.h>
+
 extern void exception_init (void);
 
 

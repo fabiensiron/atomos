@@ -4,10 +4,12 @@ LDFLAGS = -nostdlib -m32
 TARGET = ATOMOS
 SRC = arch/pm.c \
 			arch/idt.c \
+			arch/exception.c \
 			kernel/main.c \
 			kernel/panic.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
+			drivers/i8042.c \
 			lib/string.c \
 			lib/stdlib.c 
 ASM = arch/crt0.S arch/interrupt_handler.S
