@@ -10,4 +10,7 @@
 
 extern void pic_init();
 
+/* enable line */
+extern void enable_irq_line (int num);
+
 #endif /* _8259_H */

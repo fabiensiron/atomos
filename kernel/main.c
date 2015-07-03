@@ -1,5 +1,6 @@
 #include <arch/multiboot.h>
 #include <arch/pm.h>
+#include <arch/irq.h>
 #include <arch/idt.h>
 #include <arch/exception.h>
 #include <drivers/vga_text.h>
@@ -26,6 +27,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   /* init exceptions */
   exception_init ();
+
+  /* enable irq */
+  init_irq ();
 
   /* set interrupts up */
   STI;

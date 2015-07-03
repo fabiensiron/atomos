@@ -5,6 +5,7 @@ TARGET = ATOMOS
 SRC = arch/pm.c \
 			arch/idt.c \
 			arch/exception.c \
+			arch/irq.c \
 			kernel/main.c \
 			kernel/panic.c \
 			drivers/vga_text.c \

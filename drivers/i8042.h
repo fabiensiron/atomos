@@ -7,6 +7,7 @@
 #define _i8042_h
 
 #include <include/kernel.h>
+#include <drivers/vga_text.h>
 #include <arch/ioport.h>
 
 #define I8042_DATA 0x60

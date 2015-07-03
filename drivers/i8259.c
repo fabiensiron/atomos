@@ -21,3 +21,10 @@ extern void pic_init() {
   OUTB(0xFB, _MASTER+1);
   OUTB(0xFF, _SLAVE+1);
 }
+
+extern void enable_irq_line (int num_) {
+  if (num_ < 8)
+    OUTB (INB(_MASTER+1) & ~(1 << num_), _MASTER+1);
+  else
+    OUTB (INB(_SLAVE+1) & ~(1 << (num_-8)), _SLAVE+1);
+}
