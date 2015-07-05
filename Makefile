@@ -15,7 +15,7 @@ SRC = arch/pm.c \
 			lib/stdlib.c 
 ASM = arch/crt0.S arch/interrupt_handler.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
-LINK_SCRIPT = atomos.lds
+LINK_SCRIPT = tools/atomos.lds
 PWD := $(shell pwd)
 
 all: $(TARGET)
@@ -30,7 +30,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	./qemu_boot.sh --qemu
+	./tools/qemu_boot.sh --qemu
 
 .PHONY: clean
 clean:
