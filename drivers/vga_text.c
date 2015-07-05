@@ -1,5 +1,15 @@
 #include "vga_text.h"
 
+static void update_cursor (int r_, int c_) {
+  int position = r_ * 80 + c_;
+  
+  OUTB(14, 0x3D4);
+  OUTB(position >> 8, 0x3D5);
+
+  OUTB(15, 0x3D4);
+  OUTB(position, 0x3D5);
+}
+
 static void write_char (char c_) {
   u8* addr = (u8*)TEXT_FRAMEBUFFER_START + 2*cursor.r*NB_COLUMNS +cursor.c*2;
   switch (c_) {
@@ -22,12 +32,14 @@ static void write_char (char c_) {
       ++cursor.c;
       break;
   }
+  update_cursor (cursor.r, cursor.c);
 }
 
 extern void write_text_vga (char* str) {
   int i;
-  for (i = 0; str[i] != '\0'; i++)
+  for (i = 0; str[i] != '\0'; i++){
     write_char (str[i]); 
+  }
 }
 
 extern void clear_screen () {
@@ -39,6 +51,7 @@ extern void clear_screen () {
   }
   cursor.c = 0;
   cursor.r = 0;
+  update_cursor (cursor.r, cursor.c);
 }
 
 extern void set_fg_color (text_color_e c_) {text_color.fg = c_;}
@@ -55,6 +68,7 @@ extern void fill_screen (text_color_e bg_) {
   text_color.bg = bg_;
   cursor.c = 0;
   cursor.r = 0;
+  update_cursor (cursor.r, cursor.c);
 }
 
 extern void boot_message () {

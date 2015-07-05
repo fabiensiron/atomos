@@ -2,6 +2,7 @@
 #define _VGA_TEXT_H
 
 #include <include/kernel.h>
+#include <arch/ioport.h>
 
 #define TEXT_FRAMEBUFFER_START 0xB8000
 #define TEXT_FRAMEBUFFER_END   0xc0000
