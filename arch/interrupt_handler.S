@@ -29,18 +29,11 @@ critical_exception:
 
 .extern refresh_ps2_controller
 
-ack_int_A:
-  movb $0x20, %al
-  outb %al, $0x20
-
-ack_int_B:
-  movb $0x20, %al
-  outb %al, $0x20
-  outb %al, $0xA0
-
 .globl keyboard_IRQ
 keyboard_IRQ:
   pusha
   call refresh_ps2_controller
-  call ack_int_A
+  movb $0x20, %al
+  outb %al, $0x20
+  popa
   iret
