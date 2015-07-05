@@ -5,7 +5,7 @@
 #include <arch/ioport.h>
 
 #define TEXT_FRAMEBUFFER_START 0xB8000
-#define TEXT_FRAMEBUFFER_END   0xc0000
+#define TEXT_FRAMEBUFFER_END   0xB8FA0
 #define TEXT_FRAMEBUFFER_NPB   16 
 
 static struct {
@@ -41,7 +41,7 @@ static struct {
 #define NB_COLUMNS 80
 
 // static void write_char (char c);
-// static void scroll_down ();
+extern void scroll_down ();
 
 extern void write_text_vga (char* str);
 extern void set_cursor (u64 r, u64 c);

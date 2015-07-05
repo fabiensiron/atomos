@@ -37,9 +37,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   // test trap 
   // int a = 4 / 0;
 
-  write_text_vga ("\n");
+ // write_text_vga ("\n");
 
-  boot_message (); 
+ boot_message (); 
 
   for (;;)
     continue;

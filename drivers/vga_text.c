@@ -10,8 +10,31 @@ static void update_cursor (int r_, int c_) {
   OUTB(position, 0x3D5);
 }
 
+extern void scroll_down () {
+  int offset_ = 2*NB_COLUMNS;
+  u8 next;
+  for (int r_ = 1; r_ <= NB_ROWS; r_++) {
+    for (int c_ = 0; c_ < NB_COLUMNS; c_++) {
+      u8* addr = (u8*)TEXT_FRAMEBUFFER_START + 2*r_*NB_COLUMNS + c_*2;  
+      next = ((u32)addr)<TEXT_FRAMEBUFFER_END?*addr:' ';
+      *(addr-offset_) = next;
+    }
+  }
+  cursor.r--;
+  update_cursor (cursor.r, cursor.c);
+}
+
 static void write_char (char c_) {
+  cursor.r = cursor.r + cursor.c / NB_COLUMNS;
+  cursor.c = cursor.c % NB_COLUMNS;
+
   u8* addr = (u8*)TEXT_FRAMEBUFFER_START + 2*cursor.r*NB_COLUMNS +cursor.c*2;
+  if ((u32)addr >= TEXT_FRAMEBUFFER_END) 
+  {
+    scroll_down();
+    addr = (u8*)TEXT_FRAMEBUFFER_START + 2*cursor.r*NB_COLUMNS +cursor.c*2;
+  }
+
   switch (c_) {
     case '\n':
       ++cursor.r;
