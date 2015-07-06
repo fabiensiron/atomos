@@ -40,7 +40,7 @@ static struct {
 #define NB_ROWS 25
 #define NB_COLUMNS 80
 
-// static void write_char (char c);
+extern void putc_text_vga (char c);
 extern void scroll_down ();
 
 extern void write_text_vga (char* str);

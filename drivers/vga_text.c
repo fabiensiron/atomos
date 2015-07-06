@@ -24,7 +24,7 @@ extern void scroll_down () {
   update_cursor (cursor.r, cursor.c);
 }
 
-static void write_char (char c_) {
+extern void putc_text_vga (char c_) {
   cursor.r = cursor.r + cursor.c / NB_COLUMNS;
   cursor.c = cursor.c % NB_COLUMNS;
 
@@ -61,7 +61,7 @@ static void write_char (char c_) {
 extern void write_text_vga (char* str) {
   int i;
   for (i = 0; str[i] != '\0'; i++){
-    write_char (str[i]); 
+    putc_text_vga(str[i]); 
   }
 }
 

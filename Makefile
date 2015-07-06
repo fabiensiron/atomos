@@ -12,7 +12,8 @@ SRC = arch/pm.c \
 			drivers/i8259.c \
 			drivers/i8042.c \
 			lib/string.c \
-			lib/stdlib.c 
+			lib/stdlib.c \
+			lib/stdio.c
 ASM = arch/crt0.S arch/interrupt_handler.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
 LINK_SCRIPT = tools/atomos.lds

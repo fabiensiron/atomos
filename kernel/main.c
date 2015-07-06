@@ -7,6 +7,7 @@
 #include <drivers/i8259.h>
 #include <arch/ioport.h>
 #include <include/kernel.h>
+#include <include/stdio.h>
 #include <include/string.h>
 
 
@@ -38,8 +39,17 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   // int a = 4 / 0;
 
  // write_text_vga ("\n");
+ //
+  
 
- boot_message (); 
+  boot_message (); 
+  
+  //kout_init();
+  //
+  int a = 51234;
+  int b = 0xCAFE;
+
+  kprintf ("yo:%iprout %x", a, b);
 
   for (;;)
     continue;
