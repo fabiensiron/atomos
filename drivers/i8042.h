@@ -13,8 +13,8 @@
 #define I8042_DATA 0x60
 #define I8042_COMMAND 0x64
 
-#define KEYPRESSED 1
-#define KEYRELEASED 0
+#define KEYPRESSED  0
+#define KEYRELEASED 1
 
 bool_t keyboard_new_event;
 u8 keyboard_lastkeypressed;
