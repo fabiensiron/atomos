@@ -17,6 +17,21 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   clear_screen ();
 
+  if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
+    kprintf ("[000] boot with grub\n");
+    kprintf ("[001] flags: %x\n", info->flags);
+    kprintf ("[002] memory lower: %x\n", info->mem_lower);
+    kprintf ("[003] memory upper: %x\n", info->mem_upper);
+    kprintf ("[004] boot device: %x\n", info->boot_device);
+    kprintf ("[005] command line: %x\n", info->cmdline);
+    kprintf ("[006] modules number: %x\n", info->mods_count);
+    kprintf ("[007] modules address: %x\n", info->mods_addr);
+    kprintf ("[008] mmap length: %x\n", info->mmap_length);
+    kprintf ("[009] mmap address: %x\n", info->mmap_addr);
+    kprintf ("[010] drives length: %x\n", info->drives_length);
+    kprintf ("[011] drives address: %x\n", info->drives_addr);
+  }
+
   /* set 32-bits intel protected mode */
   switch_to_pm ();
 
@@ -42,14 +57,10 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
  //
   
 
-  boot_message (); 
+//  boot_message (); 
   
   //kout_init();
   //
-  int a = 51234;
-  int b = 0xCAFE;
-
-  kprintf ("yo:%iprout %x", a, b);
 
   for (;;)
     continue;

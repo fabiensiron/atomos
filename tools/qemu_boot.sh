@@ -1,20 +1,20 @@
 print_usage (){
-  echo "Usage: $0 ATOMUX"
-  echo "...   then qemu ATOMUX_BOOTABLE"
+  echo "Usage: $0 --floppy"
+  echo "....or.$0 --qemu"
 }
 
 
 ################################
 
-if [ $# -eq 1 ] && [ $1 == "--bochs" ]; then
-  dd if=/dev/zero of=floppy.img bs=1024 count=1440
-  losetup /dev/loop1 floppy.img
-
-
-
-
+if [ $# -eq 1 ] && [ $1 == "--floppy" ]; then
+  cp tools/floppy atomos_floppy
+  mcopy -i atomos_floppy ATOMOS ::/modules/k
+  mcopy -i atomos_floppy tests/test ::/modules/rom
+  qemu-system-i386 -fda atomos_floppy &
 
 elif [ $# -eq 1 ] && [ $1 == "--qemu" ]; then
 # print_usage
   qemu-system-i386 -kernel ATOMOS
+else
+  print_usage
 fi

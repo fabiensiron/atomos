@@ -31,7 +31,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	./tools/qemu_boot.sh --qemu
+	./tools/qemu_boot.sh --floppy
 
 .PHONY: clean
 clean:
@@ -39,7 +39,9 @@ clean:
 	rm -rf kernel/*.o
 	rm -rf drivers/*.o
 	rm -rf lib/*.o
+	rm -rf tests/*.o
 
 .PHONY: mrproper 
 mrproper: clean
+	rm -rf atomos_floppy
 	rm -rf $(TARGET)

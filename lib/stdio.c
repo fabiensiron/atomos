@@ -3,6 +3,7 @@
 
 union u_size {
   int i;
+  unsigned int u;
   unsigned long l;
   char c;
   void* p;
@@ -36,14 +37,16 @@ static char pop (struct stack_t *s_) {
 
 static char digits[] = "0123456789abcdef";
 
-static void putint_i (int i_, int base_) {
+static void putint_i (unsigned int i_, int base_) {
   if (i_ == 0) {
     putc_i ('0');
   } else {
     struct stack_t stack;
     stack.head = 0;
-    if (i_ < 0) 
-      putc_i ('-');
+ /*   if (i_ < 0) {
+      putc_i ('-'); 
+      i_ *= -1;
+    } */
     do {
       char loc_ = digits[i_%base_]; 
       push (loc_, &stack);
@@ -77,7 +80,7 @@ int vprintf (char* fmt_, va_list args_) {
           }break;
         case 'x':{
           putc_s("0x");
-          putint_i(u.i,16);
+          putint_i(u.u,16);
           }break;
       }
       i++;
