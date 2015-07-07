@@ -13,11 +13,14 @@ static void update_cursor (int r_, int c_) {
 extern void scroll_down () {
   int offset_ = 2*NB_COLUMNS;
   u8 next;
+  u8 color;
   for (int r_ = 1; r_ <= NB_ROWS; r_++) {
     for (int c_ = 0; c_ < NB_COLUMNS; c_++) {
       u8* addr = (u8*)TEXT_FRAMEBUFFER_START + 2*r_*NB_COLUMNS + c_*2;  
       next = ((u32)addr)<TEXT_FRAMEBUFFER_END?*addr:' ';
+      color = ((u32)(addr+1))<TEXT_FRAMEBUFFER_END?*(addr+1):(u8)(text_color.bg<<4)+text_color.fg;
       *(addr-offset_) = next;
+      *(addr-offset_+1) = color; 
     }
   }
   cursor.r--;
