@@ -8,6 +8,7 @@ SRC = arch/pm.c \
 			arch/irq.c \
 			kernel/main.c \
 			kernel/panic.c \
+			kernel/elf_loader.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \

@@ -9,6 +9,7 @@
 #include <include/kernel.h>
 #include <include/stdio.h>
 #include <include/string.h>
+#include <include/elf_loader.h>
 
 static void fake_sleep () {
   for (int i = 0; i<10000000; i++)
@@ -110,14 +111,17 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   set_fg_color (RED);
 
-  kprintf ("\n============================\n");
-  kprintf ("    Welcome in atomOS !!\n");
-  kprintf ("============================\n\n");
+  kprintf ("\n====================================\n");
+  kprintf ("        Welcome in atomOS !!\n");
+  kprintf ("====================================\n\n");
 
   set_fg_color (WHITE);
+  kprintf ("$");
+
+  load_elf((u32)info->mods_addr);
 
   // test trap 
-  // int a = 4 / 0;
+ // int a = 4 / 0;
 
  // write_text_vga ("\n");
  //
