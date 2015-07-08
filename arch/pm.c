@@ -1,11 +1,5 @@
 #include "pm.h"
 
-#define NULL_SEGMENT 0
-#define KERNEL_CODE_SEGMENT 1
-#define KERNEL_DATA_SEGMENT 2
-#define USER_CODE_SEGMENT 3
-#define USER_DATA_SEGMENT 4
-
 typedef struct gdt_entry_s {
   u16 limit0_15;
   u16 base0_15;
@@ -21,6 +15,28 @@ typedef struct gdt_entry_s {
   u8 granularity: 1;
   u8 base24_31;
 } __attribute__((packed,aligned(8))) gdt_entry_t;
+
+
+typedef struct tss_entry_s {
+  u16 previous_task, unusedt;
+  u32 esp0;
+  u16 ss0, unused0;
+  u32 esp1;
+  u16 ss1, unused1;
+  u32 esp2;
+  u16 ss2, unused2;
+  u32 cr3;
+  u32 eip,eflags;
+  u32 eax,ecx,edx,ebx,esp,ebp,esi,edi;
+  u16 es, unused_es;
+  u16 cs, unused_cs;
+  u16 ss, unused_ss;
+  u16 ds, unused_ds;
+  u16 fs, unused_fs;
+  u16 gs, unused_gs;
+  u16 ldt_selector, unused_ldt;
+  u16 debug_flag, io_map;
+} __attribute__((packed,aligned(8))) tss_entry_t;
 
 #define MAKE_SELECTOR(index, ti, rpl) \
   ( \
@@ -68,16 +84,26 @@ typedef struct {
   u32 base;
 } __attribute__((packed,aligned(8))) gdt_t;
 
-struct gdt_entry_s gdt[3];
+struct tss_entry_s tss;
+struct gdt_entry_s gdt[6];
 
 static void load_gdt () {
+
+  /* init tss */
+  tss.debug_flag = 0;
+  tss.io_map = 0;
+  tss.ss0 = MAKE_SELECTOR(KERNEL_DATA_SEGMENT,0,0);
+  tss.esp0 = 0x20000;
+
+  /* init gdt */
 
   gdt[NULL_SEGMENT] = (struct gdt_entry_s){0,};
 
   gdt[KERNEL_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 1);
   gdt[KERNEL_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 0); 
-//  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
-//  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
+  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
+  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
+  gdt[TSS_SEGMENT] = ADD_GDT_ENTRY ((u32)&tss, 0x67, 0, 0); 
 
   gdt_t gdt_desc;
   gdt_desc.limit = sizeof (gdt) -1;
@@ -89,6 +115,21 @@ static void load_gdt () {
     : "m" (gdt_desc)
     : "memory"
     );
+}
+
+extern void reset_segment (int num_, u32 min_, u32 max_, 
+    u8 ring_, u8 code_) {
+  gdt[num_] = ADD_GDT_ENTRY (min_,max_,ring_,code_);
+}
+
+static void load_tss () {
+  __asm__ volatile (
+    "movw $0x28, %%ax \n\
+     ltr %%ax\n"
+      :
+      :
+      :
+      );
 }
 
 extern void switch_to_pm () {
@@ -104,4 +145,5 @@ extern void switch_to_pm () {
 /* 
 */
   load_segments ();
+//  load_tss();
 }

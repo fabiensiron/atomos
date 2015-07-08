@@ -3,6 +3,7 @@
 
 #include <include/kernel.h>
 #include <include/stdio.h>
+#include <arch/pm.h>
 #include <arch/multiboot.h>
 
 #define PT_LOAD 1
