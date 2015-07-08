@@ -18,11 +18,13 @@ extern int memcmp (const void* p1, const void* p2, size_t n) {
   return n;
 }
 
-extern void* memcpy (void* p1, const void* p2, size_t n) {
-  int* i1 = NULL;
-  const int* i2 = NULL;
+#include <include/stdio.h>
 
-  for (i1 = p1, i2 = p2; n>0; n--, i1++, i2++)
+extern void* memcpy (void* p1, const void* p2, size_t n) {
+  u32* i1 = NULL;
+  const u32* i2 = NULL;
+
+  for (i1 = p1, i2 = p2; n>0; n--, i1++, i2++) 
     *(i1) = *(i2);
 
   return p1;

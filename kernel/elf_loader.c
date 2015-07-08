@@ -10,11 +10,14 @@ extern void load_elf (u32 addr_) {
 
   for (int i = 0; i < hdr->e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
-      memcpy ((void*)phdr[i].p_paddr,hdr+phdr[i].p_offset, 
+      memcpy ((char*)phdr[i].p_paddr,
+          (void*)((char*)hdr+phdr[i].p_offset), 
           phdr[i].p_filesz);
 
+      kprintf ("\np: %x", phdr[i].p_paddr);
+
       memset((void*)phdr[i].p_paddr + phdr[i].p_filesz,0,
-          phdr[i].p_paddr - phdr[i].p_memsz);
+          phdr[i].p_memsz - phdr[i].p_filesz);
       
       if (highest < phdr[i].p_paddr + phdr[i].p_memsz)
         highest = phdr[i].p_paddr + phdr[i].p_memsz; 
@@ -22,6 +25,7 @@ extern void load_elf (u32 addr_) {
     }
   }
 
+  u32 *entry = (u32*)(hdr->e_entry);
+
   brk = (void*)highest;
-  kprintf ("\nbrk: %x", brk);
 } 
