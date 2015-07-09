@@ -2,6 +2,7 @@
 #include <drivers/vga_text.h>
 
 void panic (const char* msg) {
+  CLI;
 
   fill_screen (BLUE);
 

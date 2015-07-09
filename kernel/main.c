@@ -33,7 +33,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     fake_sleep ();
     kprintf ("[004] boot device: %x\n", info->boot_device);
     fake_sleep ();
-    kprintf ("[005] command line: %x\n", info->cmdline);
+    kprintf ("[005] command line: %s\n", info->cmdline);
     fake_sleep ();
     kprintf ("[006] modules number: %x\n", info->mods_count);
     fake_sleep ();
@@ -50,9 +50,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   }
 
   /* set 32-bits intel protected mode */
-  switch_to_pm ();
 
   kprintf ("[012] load gdt");
+  switch_to_pm ();
   set_fg_color (GREEN);
   kprintf ("\t\t\t\t\t\t\t\t\tOK\n");
   set_fg_color (WHITE);
@@ -65,49 +65,64 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     fake_sleep ();
 
   /* init the i8259 (interrupt controller) */
-  pic_init ();
 
   kprintf ("[014] init i8259 interrupt controller");
+  pic_init ();
   set_fg_color (GREEN);
   kprintf ("\t OK\n");
   set_fg_color (WHITE);
     fake_sleep ();
 
   /* set-up the idt */
-  load_idt ();
 
   kprintf ("[015] init interrupt table");
+  load_idt ();
   set_fg_color (GREEN);
   kprintf ("\t\t\t\t   OK\n");
   set_fg_color (WHITE);
     fake_sleep ();
 
   /* init exceptions */
-  exception_init ();
 
   kprintf ("[016] init exceptions");
+  exception_init ();
   set_fg_color (GREEN);
   kprintf ("\t\t\t\t\t\t  OK\n");
   set_fg_color (WHITE);
     fake_sleep ();
 
   /* enable irq */
-  init_irq ();
 
   kprintf ("[017] init hardware interrupt");
+  init_irq ();
   set_fg_color (GREEN);
   kprintf ("\t\t\t\tOK\n");
   set_fg_color (WHITE);
     fake_sleep ();
 
   /* set interrupts up */
-  STI;
 
   kprintf ("[018] set interrupt");
+  STI;
   set_fg_color (GREEN);
   kprintf ("\t\t\t\t\t\t\t OK\n");
   set_fg_color (WHITE);
     fake_sleep ();
+
+  
+  kprintf ("[019] load user binary (elf)");
+  if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
+      info->mods_count == 1) {
+    load_elf((u32)info->mods_addr);
+    set_fg_color (GREEN);
+    kprintf ("\t\t\t\t OK\n");
+  } else {
+    set_fg_color (RED);
+    kprintf ("\t\t\t\t FAILED\n");
+    set_fg_color (WHITE);
+  }
+    set_fg_color (WHITE);
+      fake_sleep ();
 
   set_fg_color (RED);
 
@@ -118,10 +133,8 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   set_fg_color (WHITE);
   kprintf ("$");
 
-  load_elf((u32)info->mods_addr);
-
   // test trap 
- // int a = 4 / 0;
+  // int a = 4 / 0;
 
  // write_text_vga ("\n");
  //
