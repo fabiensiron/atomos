@@ -16,4 +16,4 @@ kernel_entry:
   /* because I'm paranoid */
   loop:
     hlt
-    jmp loop
+     jmp loop

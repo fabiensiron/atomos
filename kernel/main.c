@@ -10,6 +10,7 @@
 #include <include/stdio.h>
 #include <include/string.h>
 #include <include/elf_loader.h>
+#include <include/task.h>
 #include <include/log.h>
 
 static void fake_sleep () {
@@ -84,6 +85,11 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   } else {
     klog ("load user binary (ELF)", NULL, STATE_FAILED);
   }
+
+  klog ("jump to userland", NULL, STATE_OK);
+  load_task ();
+  
+  /*  
   set_fg_color (RED);
 
   kprintf ("\n====================================\n");
@@ -92,7 +98,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   set_fg_color (WHITE);
   kprintf ("$");
-
+*/
   // test trap 
   // int a = 4 / 0;
 

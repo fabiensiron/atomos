@@ -1,4 +1,6 @@
 #include <include/elf_loader.h>
+#include <include/log.h>
+
 
 extern void load_elf (u32 addr_) {
   module_t* grub_mods = (void*)addr_;
@@ -32,10 +34,16 @@ extern void load_elf (u32 addr_) {
   u32 data_base = phdr[1].p_paddr;
   u32 data_end = phdr[1].p_paddr + phdr[1].p_memsz;
 
-  reset_segment (USER_DATA_SEGMENT, text_base, 0xfffff,
+  reset_segment (USER_DATA_SEGMENT, data_base, 0xfffff,
       3, 0);
 
-  u32 *entry = (u32*)(hdr->e_entry);
+//  klog ("text_base", &text_base, STATE_NOTHING);
+  //klog ("data_base", &data_base, STATE_NOTHING);
+
+
+  u32 entry = (u32)(hdr->e_entry);
+
+//  klog ("text_entry", &(entry), STATE_NOTHING);
 
   brk = (void*)highest;
 } 
