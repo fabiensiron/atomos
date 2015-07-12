@@ -1,3 +1,4 @@
+SCRIPT_ARG=floppy
 CC = gcc
 CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99
 LDFLAGS = -nostdlib -m32  
@@ -9,6 +10,7 @@ SRC = arch/pm.c \
 			kernel/main.c \
 			kernel/panic.c \
 			kernel/elf_loader.c \
+			kernel/log.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \
@@ -32,7 +34,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	./tools/qemu_boot.sh --floppy
+	./tools/qemu_boot.sh --$(SCRIPT_ARG)
 
 .PHONY: clean
 clean:

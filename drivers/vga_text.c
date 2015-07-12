@@ -82,7 +82,7 @@ extern void clear_screen () {
 
 extern void set_fg_color (text_color_e c_) {text_color.fg = c_;}
 extern void set_bg_color (text_color_e c_) {text_color.bg = c_;}
-extern void set_cursor (u64 r_, u64 c_) {cursor.c = c_; cursor.r = c_;};
+extern void set_cursor (u64 r_, u64 c_) {cursor.c = c_; cursor.r = r_;};
 
 extern void fill_screen (text_color_e bg_) {
   for (int i =TEXT_FRAMEBUFFER_START; i < TEXT_FRAMEBUFFER_END; i+=2)
@@ -106,3 +106,7 @@ extern void boot_message () {
   write_text_vga ("\t# Francois 'Hellzy' Mazeau\n\n");
   write_text_vga ("LOADING...\n");
 }
+
+
+extern struct text_color_t get_color () {return text_color;}
+extern struct cursor_t get_cursor () {return cursor;}

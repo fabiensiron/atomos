@@ -8,10 +8,12 @@
 #define TEXT_FRAMEBUFFER_END   0xB8FA0
 #define TEXT_FRAMEBUFFER_NPB   16 
 
-static struct {
+extern struct cursor_t {
   int c; 
   int r;
-} cursor = {0,0};
+};
+
+static struct cursor_t cursor = {0,0};
 
 typedef enum {
   BLACK   = 0,
@@ -32,10 +34,12 @@ typedef enum {
   LIGHT_WHITE
 } text_color_e;
 
-static struct {
+extern struct text_color_t{
   text_color_e bg;
   text_color_e fg;
-} text_color = {BLACK, WHITE};
+};
+
+static struct text_color_t text_color = {BLACK, WHITE};
 
 #define NB_ROWS 25
 #define NB_COLUMNS 80
@@ -51,5 +55,7 @@ extern void set_fg_color (text_color_e);
 extern void set_bg_color (text_color_e);
 extern void boot_message ();
 
+extern struct text_color_t get_color ();
+extern struct cursor_t get_cursor ();
 
 #endif /* _VGA_TEXT_H */

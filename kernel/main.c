@@ -10,6 +10,7 @@
 #include <include/stdio.h>
 #include <include/string.h>
 #include <include/elf_loader.h>
+#include <include/log.h>
 
 static void fake_sleep () {
   for (int i = 0; i<10000000; i++)
@@ -23,107 +24,65 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   clear_screen ();
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
-    kprintf ("[000] boot with grub\n");
-    fake_sleep ();
-    kprintf ("[001] flags: %x\n", info->flags);
-    fake_sleep ();
-    kprintf ("[002] memory lower: %x\n", info->mem_lower);
-    fake_sleep ();
-    kprintf ("[003] memory upper: %x\n", info->mem_upper);
-    fake_sleep ();
-    kprintf ("[004] boot device: %x\n", info->boot_device);
-    fake_sleep ();
-    kprintf ("[005] command line: %s\n", info->cmdline);
-    fake_sleep ();
-    kprintf ("[006] modules number: %x\n", info->mods_count);
-    fake_sleep ();
-    kprintf ("[007] modules address: %x\n", info->mods_addr);
-    fake_sleep ();
-    kprintf ("[008] mmap length: %x\n", info->mmap_length);
-    fake_sleep ();
-    kprintf ("[009] mmap address: %x\n", info->mmap_addr);
-    fake_sleep ();
-    kprintf ("[010] drives length: %x\n", info->drives_length);
-    fake_sleep ();
-    kprintf ("[011] drives address: %x\n", info->drives_addr);
-    fake_sleep ();
+    klog ("boot with grub", NULL, STATE_NOTHING);
+    klog ("flags", &info->flags, STATE_NOTHING);
+    klog ("memory lower", &info->mem_lower, STATE_NOTHING);
+    klog ("memory upper", &info->mem_upper, STATE_NOTHING);
+    klog ("boot device", &info->boot_device, STATE_NOTHING);
+    klog ("command line", (u32*)info->cmdline, 
+        STATE_NOTHING | TYPE_STRING);
+    klog ("modules number", &info->mods_count, 
+        STATE_NOTHING | TYPE_UINT);
+    klog ("modules address", &info->mods_addr, STATE_NOTHING);
+    klog ("mmap length", &info->mmap_length, STATE_NOTHING);
+    klog ("mmap address", &info->mmap_addr, STATE_NOTHING);
+    klog ("drives length", &info->drives_length, STATE_NOTHING);
+    klog ("drives address", &info->drives_addr, STATE_NOTHING);
   }
+
+
 
   /* set 32-bits intel protected mode */
 
-  kprintf ("[012] load gdt");
   switch_to_pm ();
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t\t\t\t\t\t\tOK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
-
-  kprintf ("[013] jump to 32-bits protected");
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t OK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
+  klog ("load general description table (GDT)", NULL, STATE_OK);
+  klog ("load intel 32 protected mod", NULL, STATE_OK);
 
   /* init the i8259 (interrupt controller) */
 
-  kprintf ("[014] init i8259 interrupt controller");
   pic_init ();
-  set_fg_color (GREEN);
-  kprintf ("\t OK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
+  klog ("init programmable interrupt controller (i8259)"
+      , NULL, STATE_OK);
 
   /* set-up the idt */
 
-  kprintf ("[015] init interrupt table");
   load_idt ();
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t\t   OK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
+  klog ("init interrupt descriptor table (IDT)", NULL, STATE_OK);
 
   /* init exceptions */
 
-  kprintf ("[016] init exceptions");
   exception_init ();
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t\t\t\t  OK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
+  klog ("init exceptions", NULL, STATE_OK);
+
 
   /* enable irq */
 
-  kprintf ("[017] init hardware interrupt");
   init_irq ();
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t\tOK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
+  klog ("init hardware interrupt (IRQ)", NULL, STATE_OK);
 
   /* set interrupts up */
 
-  kprintf ("[018] set interrupt");
   STI;
-  set_fg_color (GREEN);
-  kprintf ("\t\t\t\t\t\t\t OK\n");
-  set_fg_color (WHITE);
-    fake_sleep ();
-
+  klog ("enable hardware interrupt (STI)", NULL, STATE_OK);
   
-  kprintf ("[019] load user binary (elf)");
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
       info->mods_count == 1) {
     load_elf((u32)info->mods_addr);
-    set_fg_color (GREEN);
-    kprintf ("\t\t\t\t OK\n");
-  } else {
-    set_fg_color (RED);
-    kprintf ("\t\t\t\t FAILED\n");
-    set_fg_color (WHITE);
-  }
-    set_fg_color (WHITE);
-      fake_sleep ();
+    klog ("load user binary (ELF)", NULL, STATE_OK);
 
+  } else {
+    klog ("load user binary (ELF)", NULL, STATE_FAILED);
+  }
   set_fg_color (RED);
 
   kprintf ("\n====================================\n");
@@ -136,14 +95,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   // test trap 
   // int a = 4 / 0;
 
- // write_text_vga ("\n");
- //
-  
-
-//  boot_message (); 
-  
-  //kout_init();
-  //
+  //kout_init(); //TODO
 
   for (;;)
     continue;
