@@ -46,7 +46,8 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   switch_to_pm ();
   klog ("load general description table (GDT)", NULL, STATE_OK);
-  klog ("load intel 32 protected mod", NULL, STATE_OK);
+  klog ("load intel 32 protected mode", NULL, STATE_OK);
+  klog ("init task state segment (TSS)", NULL, STATE_OK);
 
   /* init the i8259 (interrupt controller) */
 

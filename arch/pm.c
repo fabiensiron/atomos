@@ -79,6 +79,23 @@ static void load_segments () {
     .base24_31 = (base >> 24) & 0xff \
    })
 
+#define ADD_TSS_ENTRY(base,limit) \
+  ((gdt_entry_t){ \
+    .limit0_15 = limit & 0xffff, \
+    .base0_15 = base & 0xffff, \
+    .base16_23 = (base >> 16) & 0xff, \
+    .type = 9, \
+    .dtype = 0, \
+    .dpl = 0x3, \
+    .present = 1, \
+    .limit16_19 = (limit >> 16) & 0xf, \
+    .avl = 0, \
+    .l = 0, \
+    .dsize = 0, \
+    .granularity = 0, \
+    .base24_31 = (base >> 24) & 0xff \
+   })
+
 typedef struct {
   u16 limit;
   u32 base;
@@ -103,7 +120,7 @@ static void load_gdt () {
   gdt[KERNEL_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 0); 
   gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
   gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
-  gdt[TSS_SEGMENT] = ADD_GDT_ENTRY ((u32)&tss, 0x67, 0, 0); 
+  gdt[TSS_SEGMENT] = ADD_TSS_ENTRY ((u32)&tss, 0x67);
 
   gdt_t gdt_desc;
   gdt_desc.limit = sizeof (gdt) -1;
@@ -145,5 +162,5 @@ extern void switch_to_pm () {
 /* 
 */
   load_segments ();
-//  load_tss();
+  load_tss();
 }
