@@ -1,6 +1,13 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
 
-/* empty for the moment */
+#include <syscall.h> 
+
+inline 
+  void _start () {
+    main ();
+    for (;;)
+      ;
+  }
 
 #endif /* _STDLIB_H */
