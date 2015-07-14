@@ -7,7 +7,7 @@ load_task:
   push $0x9000 // sp
   pushfl // flags
   popl %eax 
-  // orl $0x200, %eax // enable IF
+  orl $0x200, %eax // enable IF
   and $0xffffbfff, %eax // disable NT (no hardware commutation)
   push %eax
   push $0x1b // cs

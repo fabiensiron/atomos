@@ -86,6 +86,10 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("load user binary (ELF)", NULL, STATE_FAILED);
   }
 
+  u32 sys_nmb = 0x80;
+  set_syscall_handler (sys_nmb); 
+  klog ("init syscall at port", &sys_nmb, STATE_OK);
+
   klog ("jump to userland", NULL, STATE_OK);
   load_task ();
   

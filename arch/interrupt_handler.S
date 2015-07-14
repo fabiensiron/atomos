@@ -2,6 +2,28 @@
 
 .extern error_isr
 .extern panic 
+.extern refresh_ps2_controller
+.extern syscall
+
+.macro SAVE_REG 
+  pusha
+  pushw %ds
+  pushw %es
+  pushw %fs
+  pushw %gs
+  pushl %ebx
+  mov $0x10, %bx
+  mov %bx, %ds
+  popl %ebx
+.endm
+
+.macro RESTORE_REG 
+  popw %gs
+  popw %fs
+  popw %es
+  popw %ds
+  popa
+.endm
 
 
 .globl no_error_wrapper
@@ -27,13 +49,23 @@ critical_exception:
 
 /* IRQ handle */
 
-.extern refresh_ps2_controller
 
 .globl keyboard_IRQ
 keyboard_IRQ:
-  pusha
+  SAVE_REG
   call refresh_ps2_controller
   movb $0x20, %al
   outb %al, $0x20
-  popa
+  RESTORE_REG
+  iret
+
+.globl syscall_handler
+syscall_handler:
+  SAVE_REG
+  push %eax
+  push %ebx
+  call syscall 
+  pop %ebx
+  pop %eax
+  RESTORE_REG
   iret

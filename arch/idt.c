@@ -40,6 +40,15 @@ extern void set_idt_handler (u8 index, u32 handler, u8 seg_sel) {
   }
 }
 
+extern void set_syscall_handler (u8 index) {
+  set_idt_handler (index, (u32)syscall_handler, 0x8);
+
+  struct idt_interrupt_gate_s* idt = idt_entry + index;
+  idt->type = TRAP_GATE;
+  idt->dpl = 3;
+  
+}
+
 extern void load_idt () {
     for (int i=0; i<SIZE_IDT; i++) 
     {
@@ -47,7 +56,7 @@ extern void load_idt () {
       idt->segment_selector = 0x8;
       idt->reserved = 0;
       idt->flags = 0;
-      idt->type = 0x6;
+      idt->type = INTERRUPT_GATE;
       idt->op_size = 1;
       idt->zero = 0;
       set_idt_handler (i, (u32)NULL, 0);
@@ -73,7 +82,7 @@ extern void init_interrupts () {
   // idt_entry [EXCEPTION_DIVIDE_ERROR] = ADD_IDT_ENTRY((u32)zero_handler, 0x8);
 
   /* too clever, change every exceptions -> critical_exception (kernel panic) */
-   set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)critical_exception, 0x8);
+/*   set_idt_handler (EXCEPTION_DIVIDE_ERROR, (u32)critical_exception, 0x8);
   set_idt_handler (EXCEPTION_DEBUG, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_NMI, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_BREAKPOINT, (u32)no_error_wrapper, 0x8);
@@ -93,12 +102,12 @@ extern void init_interrupts () {
   set_idt_handler (EXCEPTION_ALIGNMENT_CHECK, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_MACHINE_CHECK, (u32)critical_exception, 0x8);
   set_idt_handler (EXCEPTION_SIMD_FLOAT, (u32)no_error_wrapper, 0x8);
-  set_idt_handler (EXCEPTION_VIRTUALIZATION, (u32)no_error_wrapper, 0x8);
+  set_idt_handler (EXCEPTION_VIRTUALIZATION, (u32)no_error_wrapper, 0x8); */
   /* RESERVED 21 to 29 */
-   for (int i = 21; i< 30; i++)
+ /*  for (int i = 21; i< 30; i++)
     set_idt_handler (i, (u32)no_error_wrapper, 0x8);
   set_idt_handler (EXCEPTION_SECURITY, (u32)no_error_wrapper, 0x8);
-  set_idt_handler (EXCEPTION_RESERVED3, (u32)no_error_wrapper, 0x8); 
+  set_idt_handler (EXCEPTION_RESERVED3, (u32)no_error_wrapper, 0x8); */ 
 }
 
 extern void error_isr (u8 error) {
