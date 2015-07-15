@@ -77,22 +77,24 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   STI;
   klog ("enable hardware interrupt (STI)", NULL, STATE_OK);
   
+  u32 sys_nmb = 0x80;
+
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
       info->mods_count == 1) {
     load_elf((u32)info->mods_addr);
     klog ("load user binary (ELF)", NULL, STATE_OK);
 
+    set_syscall_handler (sys_nmb); 
+    klog ("init syscall at port", &sys_nmb, STATE_OK);
+
+    klog ("jump to userland", NULL, STATE_OK);
+    load_task ();
   } else {
     klog ("load user binary (ELF)", NULL, STATE_FAILED);
+    klog ("init syscall at port", &sys_nmb, STATE_FAILED);
+    klog ("jump to userland", NULL, STATE_FAILED);
   }
 
-  u32 sys_nmb = 0x80;
-  set_syscall_handler (sys_nmb); 
-  klog ("init syscall at port", &sys_nmb, STATE_OK);
-
-  klog ("jump to userland", NULL, STATE_OK);
-  load_task ();
-  
   /*  
   set_fg_color (RED);
 
