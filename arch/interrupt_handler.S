@@ -62,10 +62,10 @@ keyboard_IRQ:
 .globl syscall_handler
 syscall_handler:
   SAVE_REG
-  push %eax
   push %ebx
+  push %eax
   call syscall 
-  pop %ebx
   pop %eax
+  pop %ebx
   RESTORE_REG
   iret

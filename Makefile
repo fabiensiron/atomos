@@ -35,7 +35,7 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	$(shell ./tools/qemu_boot.sh --floppy)
+	$(shell ./tools/qemu_boot.sh --$(SCRIPT_ARG))
 
 .PHONY: clean
 clean:

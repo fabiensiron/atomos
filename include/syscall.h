@@ -4,6 +4,8 @@
 #include <include/kernel.h>
 #include <include/stdio.h>
 
+#define SYS_WRITE 1
+
 extern void syscall (u32 num, u32 arg);
 
 
