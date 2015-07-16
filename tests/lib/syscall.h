@@ -13,6 +13,8 @@
       : "b"(arg), "i"(i) \
       )
 
+#define SYS_WRITE 1
 
+extern void write (char* str);
 
 #endif /* _SYSCALL_H */

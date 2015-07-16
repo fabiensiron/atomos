@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -fno-stack-protector -fno-builtin -ggdb3 -std=c99
 LDFLAGS = -nostdlib -Wl,--build-id=none -m32  
 TARGET = test
-SRC = hello_world.c 
+SRC = hello_world.c lib/syscall.c 
 OBJ = $(SRC:.c=.o) 
 PWD := $(shell pwd)
 
