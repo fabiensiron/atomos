@@ -14,7 +14,9 @@
       )
 
 #define SYS_WRITE 1
+#define SYS_READ 2
 
 extern void write (char* str);
+extern void read (char* buffer);
 
 #endif /* _SYSCALL_H */

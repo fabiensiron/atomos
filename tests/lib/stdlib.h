@@ -3,11 +3,6 @@
 
 #include <syscall.h> 
 
-inline 
-  void _start () {
-    main ();
-    for (;;)
-      ;
-  }
+extern void _start ();
 
 #endif /* _STDLIB_H */
