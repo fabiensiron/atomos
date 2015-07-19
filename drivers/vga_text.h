@@ -3,6 +3,7 @@
 
 #include <include/kernel.h>
 #include <arch/ioport.h>
+#include <include/elf_loader.h>
 
 #define TEXT_FRAMEBUFFER_START 0xB8000
 #define TEXT_FRAMEBUFFER_END   0xB8FA0

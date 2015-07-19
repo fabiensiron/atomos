@@ -1,5 +1,6 @@
 #include <include/elf_loader.h>
 #include <include/log.h>
+#include <arch/pm.h>
 
 
 extern void load_elf (u32 addr_) {
@@ -11,12 +12,12 @@ extern void load_elf (u32 addr_) {
 
   for (int i = 0; i < hdr->e_phnum; i++) {
     if (phdr[i].p_type == PT_LOAD) {
-      memcpy ((char*)phdr[i].p_paddr,
+      memcpy ((char*)(USER_BASE+phdr[i].p_paddr),
           (void*)((char*)hdr+phdr[i].p_offset), 
           phdr[i].p_filesz);
 
 
-      memset((void*)phdr[i].p_paddr + phdr[i].p_filesz,0,
+      memset((void*)USER_BASE+phdr[i].p_paddr + phdr[i].p_filesz,0,
           phdr[i].p_memsz - phdr[i].p_filesz);
       
       if (highest < phdr[i].p_paddr + phdr[i].p_memsz)
@@ -25,25 +26,29 @@ extern void load_elf (u32 addr_) {
     }
   }
 
-  u32 text_base = phdr[0].p_paddr;
+
+
+/*  u32 text_base = phdr[0].p_paddr;
   u32 text_end = phdr[0].p_paddr + phdr[0].p_memsz;
 
-  reset_segment (USER_CODE_SEGMENT, text_base, text_end,
+  reset_segment (USER_CODE_SEGMENT, text_base, 0xfffff,
       3, 1);
 
   u32 data_base = phdr[1].p_paddr;
   u32 data_end = phdr[1].p_paddr + phdr[1].p_memsz;
 
-  reset_segment (USER_DATA_SEGMENT, data_base, 0xfffff,
-      3, 0);
+  reset_segment (USER_DATA_SEGMENT, text_base, 0xfffff,
+      3, 0); */
 
 //  klog ("text_base", &text_base, STATE_NOTHING);
   //klog ("data_base", &data_base, STATE_NOTHING);
 
 
   u32 entry = (u32)(hdr->e_entry);
+//  kprintf ("%x\n", entry);
 
 //  klog ("text_entry", &(entry), STATE_NOTHING);
 
+//  user_data_addr = (void*)text_base;//(void*)text_base;
   brk = (void*)highest;
 } 

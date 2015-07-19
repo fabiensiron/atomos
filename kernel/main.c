@@ -77,6 +77,14 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   STI;
   klog ("enable hardware interrupt (STI)", NULL, STATE_OK);
   
+/*  int a;
+
+  __asm__ volatile ("movl %%cr0, %%eax \n\
+              movl %%eax, %0\n"
+              :"=a"(a)::);
+
+  klog ("cr0", &a, STATE_OK); */
+  
   u32 sys_nmb = 0x80;
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
@@ -94,6 +102,8 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("init syscall at port", &sys_nmb, STATE_FAILED);
     klog ("jump to userland", NULL, STATE_FAILED);
   }
+  kprintf ("hello");
+
 
   /*  
   set_fg_color (RED);

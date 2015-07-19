@@ -9,6 +9,7 @@
 #define PT_LOAD 1
 
 void* brk;
+void* user_data_addr;
 
 typedef struct {
   unsigned char e_ident[16]; /* ID bytes */

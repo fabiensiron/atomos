@@ -4,6 +4,7 @@
 #include <include/kernel.h>
 #include <drivers/vga_text.h>
 
+#define USER_BASE 0x20000
 
 #define NULL_SEGMENT 0
 #define KERNEL_CODE_SEGMENT 1

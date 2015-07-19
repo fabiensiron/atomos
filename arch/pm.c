@@ -118,8 +118,8 @@ static void load_gdt () {
 
   gdt[KERNEL_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 1);
   gdt[KERNEL_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 0, 0); 
-  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 1);
-  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (0, 0xfffff, 3, 0); 
+  gdt[USER_CODE_SEGMENT] = ADD_GDT_ENTRY (USER_BASE, 0xfffff, 3, 1);
+  gdt[USER_DATA_SEGMENT] = ADD_GDT_ENTRY (USER_BASE, 0xfffff, 3, 0); 
   gdt[TSS_SEGMENT] = ADD_TSS_ENTRY ((u32)&tss, 0x67);
 
   gdt_t gdt_desc;
@@ -142,22 +142,24 @@ extern void reset_segment (int num_, u32 min_, u32 max_,
 static void load_tss () {
   __asm__ volatile (
     "movw $0x28, %%ax \n\
-     ltr %%ax\n"
-      :
+     ltr %%ax\n\
+     movw %%ss, %0 \n\
+     movl %%esp, %1\n"
+      : "=m"(tss.ss0) ,"=m"(tss.esp0)
       :
       :
       );
 }
 
 extern void switch_to_pm () {
-  __asm__ volatile (
+    __asm__ volatile (
     "movl %%cr0, %%eax\n\
     orl $1, %%eax\n\
     movl %%eax, %%cr0\n"
     :
     :
     : "eax"
-    );
+    ); 
   load_gdt ();
 /* 
 */
