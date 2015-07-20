@@ -21,6 +21,11 @@
 #define SC_NULL 0xff
 #define SC_ENTER 0xfe 
 
+#define W_ENABLE  1
+#define W_DISABLE 2
+#define W_NULL    0
+
+
 bool_t keyboard_new_event;
 u8 keyboard_lastkeypressed;
 u8 input_buffer[80];
