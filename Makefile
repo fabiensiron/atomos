@@ -15,6 +15,7 @@ SRC = arch/pm.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \
+			drivers/pio.c \
 			lib/string.c \
 			lib/stdlib.c \
 			lib/stdio.c
