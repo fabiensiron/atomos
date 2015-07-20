@@ -1,6 +1,4 @@
 #include <include/elf_loader.h>
-#include <include/log.h>
-#include <arch/pm.h>
 
 
 extern void load_elf (u32 addr_) {
@@ -26,29 +24,7 @@ extern void load_elf (u32 addr_) {
     }
   }
 
-
-
-/*  u32 text_base = phdr[0].p_paddr;
-  u32 text_end = phdr[0].p_paddr + phdr[0].p_memsz;
-
-  reset_segment (USER_CODE_SEGMENT, text_base, 0xfffff,
-      3, 1);
-
-  u32 data_base = phdr[1].p_paddr;
-  u32 data_end = phdr[1].p_paddr + phdr[1].p_memsz;
-
-  reset_segment (USER_DATA_SEGMENT, text_base, 0xfffff,
-      3, 0); */
-
-//  klog ("text_base", &text_base, STATE_NOTHING);
-  //klog ("data_base", &data_base, STATE_NOTHING);
-
-
   u32 entry = (u32)(hdr->e_entry);
-//  kprintf ("%x\n", entry);
 
-//  klog ("text_entry", &(entry), STATE_NOTHING);
-
-//  user_data_addr = (void*)text_base;//(void*)text_base;
   brk = (void*)highest;
 } 
