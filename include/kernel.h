@@ -22,4 +22,6 @@ typedef unsigned char bool_t;
 
 void panic (const char* msg);
 
+void* brk;
+
 #endif /* _KERNEL_H */

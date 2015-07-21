@@ -25,6 +25,7 @@ extern void load_elf (u32 addr_) {
   }
 
   u32 entry = (u32)(hdr->e_entry);
-
   brk = (void*)highest;
+
+  reset_segment (USER_DATA_SEGMENT, (u32)USER_BASE, (u32)(brk+USER_BASE), 3, 0);
 } 

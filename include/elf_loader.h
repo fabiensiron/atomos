@@ -8,7 +8,6 @@
 
 #define PT_LOAD 1
 
-void* brk;
 void* user_data_addr;
 
 typedef struct {
