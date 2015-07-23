@@ -79,7 +79,7 @@ extern void refresh_ps2_controller () {
   scan_to_ascii (sc, W_NULL);
 }
 
-extern void wait_input (char* buffer) {
+extern u32 wait_input (char* buffer) {
   for (int i = 0; i< 80; i++)
     input_buffer[i] = 0;
 
@@ -100,9 +100,7 @@ extern void wait_input (char* buffer) {
     
     memcpy (buffer, input_buffer, input_buffer_cursor-1);
     buffer [input_buffer_cursor-1] = '\0';
-
-//    for (int i = 0; buffer[i] != '\0'; i++) 
-  //    kprintf ("%c:%x", buffer[i], buffer[i]);
+    return input_buffer_cursor -1;
 }
 
 

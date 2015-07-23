@@ -5,8 +5,8 @@ static void sys_write (char* arg) {
   kprintf ("%s", arg);
 }
 
-static void sys_read (u8* buffer) {
-  wait_input (buffer);   
+static u32 sys_read (u8* buffer) {
+  return wait_input (buffer);   
 }
 
 #define RETURN(val_,ptr_) (ptr_[13] = val_)
@@ -23,9 +23,10 @@ extern void syscall (u32 num_, u32 arg_) {
     case SYS_WRITE:
       sys_write ((void*)(arg_+USER_BASE));  
       break;
-    case SYS_READ:
-      sys_read ((void*)(arg_+USER_BASE));
-      break;
+    case SYS_READ:{
+      u32 count = sys_read ((void*)(arg_+USER_BASE));
+      RETURN(count,ptr);
+      }break;
     case SYS_SBRK:{
       u32 addr = sys_sbrk (arg_);
       RETURN(addr,ptr);

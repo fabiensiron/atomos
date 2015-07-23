@@ -18,14 +18,13 @@ extern void load_elf (u32 addr_) {
       memset((void*)USER_BASE+phdr[i].p_paddr + phdr[i].p_filesz,0,
           phdr[i].p_memsz - phdr[i].p_filesz);
       
-      if (highest < phdr[i].p_paddr + phdr[i].p_memsz)
+      if (highest < (phdr[i].p_paddr + phdr[i].p_memsz))
         highest = phdr[i].p_paddr + phdr[i].p_memsz; 
 
     }
   }
 
-  u32 entry = (u32)(hdr->e_entry);
+  entry = (void*)(hdr->e_entry);
   brk = (void*)highest;
 
-  reset_segment (USER_DATA_SEGMENT, (u32)USER_BASE, (u32)(brk+USER_BASE), 3, 0);
 } 

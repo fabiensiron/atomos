@@ -3,6 +3,8 @@ CC = gcc
 CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99
 LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
+USER_TEST_DIR = tests
+USER_TEST_TARGET = tests/test
 SRC = arch/pm.c \
 			arch/idt.c \
 			arch/exception.c \
@@ -24,8 +26,12 @@ ASM = arch/crt0.S kernel/task.S arch/interrupt_handler.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
 LINK_SCRIPT = tools/atomos.lds
 PWD := $(shell pwd)
+CD := cd
 
-all: $(TARGET)
+all: test $(TARGET)
+
+test:
+	cd $(USER_TEST_DIR) && $(MAKE)
 
 $(TARGET): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS) -T $(LINK_SCRIPT)

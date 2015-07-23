@@ -77,13 +77,6 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   STI;
   klog ("enable hardware interrupt (STI)", NULL, STATE_OK);
   
-/*  int a;
-
-  __asm__ volatile ("movl %%cr0, %%eax \n\
-              movl %%eax, %0\n"
-              :"=a"(a)::);
-
-  klog ("cr0", &a, STATE_OK); */
   
   u32 sys_nmb = 0x80;
 
@@ -96,13 +89,14 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("init syscall at port", &sys_nmb, STATE_OK);
 
     klog ("jump to userland", NULL, STATE_OK);
-    load_task ();
+    u32 loc_entry = (u32)entry;
+    klog ("task entry",&loc_entry, STATE_NOTHING);
+    load_task (loc_entry);
   } else {
     klog ("load user binary (ELF)", NULL, STATE_FAILED);
     klog ("init syscall at port", &sys_nmb, STATE_FAILED);
     klog ("jump to userland", NULL, STATE_FAILED);
   }
-  kprintf ("hello");
 
 
   /*  

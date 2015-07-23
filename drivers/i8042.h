@@ -32,7 +32,7 @@ u8 input_buffer[80];
 u8 input_buffer_cursor;
 
 extern void refresh_ps2_controller ();
-extern void wait_input (char* buffer);
+extern u32 wait_input (char* buffer);
 
 
 #endif /* _i8042_H */
