@@ -25,7 +25,7 @@
 #define SYS_SBRK  3
 
 extern void write (char* str);
-extern void read (char* buffer);
+extern unsigned int read (char* buffer);
 extern void* sbrk (unsigned int offset);
 
 #endif /* _SYSCALL_H */
