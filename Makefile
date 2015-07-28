@@ -1,7 +1,7 @@
 SCRIPT_ARG=floppy
 CC = gcc
-CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99
-LDFLAGS = -nostdlib -m32  
+CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99 -v
+LDFLAGS = -nostdlib -m32  -v
 TARGET = ATOMOS
 USER_TEST_DIR = tests
 USER_TEST_TARGET = tests/test
