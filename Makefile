@@ -15,6 +15,7 @@ SRC = arch/pm.c \
 			kernel/log.c \
 			kernel/mem.c \
 			kernel/syscall.c \
+			kernel/sched.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \

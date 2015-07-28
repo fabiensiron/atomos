@@ -1,3 +1,4 @@
+#if 0
 struct i387_struct {
 	long cwd,swd,twd;
 	long fip,fcs,foo,fos;
@@ -30,3 +31,4 @@ struct tss_struct {
 	long trace_bitmap;
 	struct i387_struct i387;
 };
+#endif
