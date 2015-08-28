@@ -26,5 +26,4 @@ extern void load_elf (u32 addr_) {
 
   entry = (void*)(hdr->e_entry);
   brk = (void*)highest;
-
 } 
