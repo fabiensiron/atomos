@@ -4,6 +4,7 @@
 #include <arch/idt.h>
 #include <arch/exception.h>
 #include <drivers/vga_text.h>
+#include <drivers/serial.h>
 #include <drivers/i8259.h>
 #include <arch/ioport.h>
 #include <include/kernel.h>
@@ -27,6 +28,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   clear_screen ();
 
+  write_text_vga ("kernel is booting...\n");
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
     klog ("boot with grub", NULL, STATE_NOTHING);
@@ -85,11 +87,17 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   /* put kernel brk */
 
   mem_init (); 
+  klog ("init kernel memory", NULL, STATE_OK);
   
+  serial_init (); 
+  klog ("init serial", NULL, STATE_OK);
   
   u32 sys_nmb = 0x80;
+  klog ("system call", &sys_nmb, STATE_NOTHING);
 
 #ifdef USERLAND 
+
+  clear_screen ();
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
       info->mods_count == 1) {
@@ -109,7 +117,6 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("jump to userland", NULL, STATE_FAILED);
   }
 #endif
-
 
 
   for (;;)

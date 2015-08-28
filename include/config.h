@@ -6,8 +6,11 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+# define SERIAL_DEBUG 1
+# define VGA_DEBUG    2
+
 # define USERLAND
 
-# define DEBUG
+# define DEBUG 1
 
 #endif /* _CONFIG_H_ */

@@ -1,5 +1,12 @@
 #include <include/stdio.h>
 
+#if DEBUG == SERIAL_DEBUG
+# define putc(c_) do{serial_putc(c_);}while(0)
+#elif DEBUG == VGA_DEBUG
+# define putc(c_) do{putc_text_vga(c_);}while(0)
+#else
+# define putc(c_)
+#endif
 
 union u_size {
   int i;
@@ -10,7 +17,7 @@ union u_size {
 };
 
 static void putc_i (char c_) {
-  putc_text_vga (c_);
+  putc(c_);
 }
 
 static void putc_s (char* s_) {

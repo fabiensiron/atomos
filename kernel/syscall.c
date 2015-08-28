@@ -1,6 +1,4 @@
 #include <include/syscall.h>
-#include <include/mem.h>
-#include <arch/pm.h>
 
 static u32 sys_sbrk (u32 offset_) {
   u32 base = (u32)brk;
@@ -10,7 +8,7 @@ static u32 sys_sbrk (u32 offset_) {
 }
 
 static void sys_write (char* arg) {
-  kprintf ("%s", arg);
+  write_text_vga (arg);
 }
 
 static u32 sys_read (u8* buffer) {

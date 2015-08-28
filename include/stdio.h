@@ -2,7 +2,9 @@
 #define _STDIO_H
 
 #include <drivers/vga_text.h>
+#include <drivers/serial.h>
 #include <include/stdarg.h>
+#include <include/config.h>
 
 extern void(*putc)(char c);
 //putc = &putc_text_vga;

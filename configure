@@ -4,7 +4,10 @@ usage()
 {
   echo "Configure options:"
   echo " --help: print usage"
-  echo " --debug: add debug"
+  echo " --debug={0,1,2}: add debug"
+  echo "    0: no debug"
+  echo "    1: debug in DEBUG file"
+  echo "    2: classical debug"
   echo " --userland=test : enable test userland"
   echo " --userland=none : build without userland"
 }
@@ -26,8 +29,16 @@ do
       usage
       exit 0
       ;;
-    "--debug")
-      let DEBUG=1
+    "--debug="*)
+      DEBUG="${i##--debug=}"
+      if [ $DEBUG != 0 ] &&\
+        [ $DEBUG != 1 ] && [ $DEBUG != 2 ]
+    then
+      echo "Error: debug value not valid"
+      echo ""
+      usage
+      exit 1
+    fi
       ;;
     "--userland="*)
       USERLAND="${i##--userland=}"
@@ -72,6 +83,9 @@ cat <<EOF > $CONFIG_FILE
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
+# define SERIAL_DEBUG 1
+# define VGA_DEBUG    2
+
 EOF
 
 if [ $USERLAND == "test" ]; then
@@ -79,8 +93,8 @@ if [ $USERLAND == "test" ]; then
   echo "" >> $CONFIG_FILE
 fi
 
-if [ $DEBUG -eq 1 ]; then
-  echo "# define DEBUG" >> $CONFIG_FILE
+if [ $DEBUG -eq 1 ] || [ $DEBUG -eq 2 ] ; then
+  echo "# define DEBUG $DEBUG" >> $CONFIG_FILE
   echo "" >> $CONFIG_FILE
 fi
 
