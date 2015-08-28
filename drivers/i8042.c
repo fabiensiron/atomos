@@ -48,7 +48,7 @@ static char scan_to_ascii (u8 sc_, u8 we_) {
     input_buffer [input_buffer_cursor % 80] = input;
     (input_buffer_cursor)++;
     if (input != SC_ENTER)
-      kprintf ("%c", input_buffer [(input_buffer_cursor)-1]);
+      putc_text_vga (input_buffer [(input_buffer_cursor)-1]);
   }
 
   return input;

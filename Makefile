@@ -19,6 +19,7 @@ SRC = arch/pm.c \
 			drivers/i8259.c \
 			drivers/i8042.c \
 			drivers/pio.c \
+                        drivers/serial.c \
 			lib/string.c \
 			lib/stdlib.c \
 			lib/stdio.c
@@ -43,7 +44,10 @@ $(TARGET): $(OBJ)
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
 boot:
-	$(shell ./tools/qemu_boot.sh --$(SCRIPT_ARG))
+	$(shell cp tools/floppy atomos_floppy)
+	$(shell mcopy -i atomos_floppy ATOMOS ::/modules/k)
+	$(shell mcopy -i atomos_floppy tests/test ::/modules/rom)
+	qemu-system-i386 -fda atomos_floppy -serial stdio > DEBUG
 
 .PHONY: clean
 clean:
@@ -55,5 +59,6 @@ clean:
 
 .PHONY: mrproper 
 mrproper: clean
+	echo "" > DEBUG
 	rm -rf atomos_floppy
 	rm -rf $(TARGET)
