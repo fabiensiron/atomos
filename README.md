@@ -9,15 +9,27 @@ It's a monolithic and monotask kernel.
 
 
 ### How to run it? ###
+configure the kernel
+
+```
+#!shell
+
+./configure --debug=2 --userland=test
+# == DEBUG ==
+#   0: no debug
+#   1: debug in DEBUG file
+#   2: vga debug
+# == USER ==
+#   none: no userland
+#   test: test userland (simple cat without parameters)
+
+```
+
 dependencies: Qemu
 
 ```
 #!shell
 
-# with debug
-./configure --debug --userland=test
-# or without
-./configure --userland=test
 make
 make boot
 ```
