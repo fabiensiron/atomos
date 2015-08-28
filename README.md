@@ -14,6 +14,10 @@ dependencies: Qemu
 ```
 #!shell
 
+# with debug
+./configure --debug --userland=test
+# or without
+./configure --userland=test
 make
 make boot
 ```
