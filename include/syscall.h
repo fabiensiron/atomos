@@ -9,7 +9,6 @@
 #define SYS_READ 2
 #define SYS_SBRK 3
 
-extern u32 sys_sbrk(u32 offset);
 extern void syscall (u32 num, u32 arg);
 
 

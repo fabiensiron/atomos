@@ -1,5 +1,13 @@
 #include <include/syscall.h>
+#include <include/mem.h>
 #include <arch/pm.h>
+
+static u32 sys_sbrk (u32 offset_) {
+  u32 base = (u32)brk;
+  brk += offset_;
+
+  return base;
+}
 
 static void sys_write (char* arg) {
   kprintf ("%s", arg);
@@ -28,7 +36,7 @@ extern void syscall (u32 num_, u32 arg_) {
       RETURN(count,ptr);
       }break;
     case SYS_SBRK:{
-      u32 addr = sys_sbrk (arg_);
+      u32 addr = ksbrk (arg_);
       RETURN(addr,ptr);
       }break;
     default:

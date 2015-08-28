@@ -1,7 +1,7 @@
 SCRIPT_ARG=floppy
 CC = gcc
-CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99 -v
-LDFLAGS = -nostdlib -m32  -v
+CFLAGS = -m32 -g -Wall -Wextra -nostdlib -nostdinc -ggdb3 -std=c99 
+LDFLAGS = -nostdlib -m32  
 TARGET = ATOMOS
 USER_TEST_DIR = tests
 USER_TEST_TARGET = tests/test
@@ -15,7 +15,6 @@ SRC = arch/pm.c \
 			kernel/log.c \
 			kernel/mem.c \
 			kernel/syscall.c \
-			kernel/sched.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \

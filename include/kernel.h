@@ -22,6 +22,7 @@ typedef unsigned char bool_t;
 
 void panic (const char* msg);
 
+void* k_brk;
 void* brk;
 void* entry;
 

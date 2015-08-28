@@ -10,6 +10,7 @@
 
 .global kernel_entry
 kernel_entry:
+  mov $0x300000, %esp
   push %ebx /* multiboot_info_t* */
   push %eax /* magic */
   call kernel_main
