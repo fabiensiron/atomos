@@ -12,6 +12,9 @@
 #include <include/elf_loader.h>
 #include <include/task.h>
 #include <include/log.h>
+#include <include/mem.h>
+#include <include/stddef.h>
+#include <include/config.h>
 
 static void fake_sleep () {
   for (int i = 0; i<10000000; i++)
@@ -23,6 +26,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   set_fg_color (WHITE);
 
   clear_screen ();
+
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
     klog ("boot with grub", NULL, STATE_NOTHING);
@@ -76,9 +80,16 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   STI;
   klog ("enable hardware interrupt (STI)", NULL, STATE_OK);
+
+
+  /* put kernel brk */
+
+  mem_init (); 
   
   
   u32 sys_nmb = 0x80;
+
+#ifdef USERLAND 
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
       info->mods_count == 1) {
@@ -97,22 +108,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("init syscall at port", &sys_nmb, STATE_FAILED);
     klog ("jump to userland", NULL, STATE_FAILED);
   }
+#endif
 
 
-  /*  
-  set_fg_color (RED);
-
-  kprintf ("\n====================================\n");
-  kprintf ("        Welcome in atomOS !!\n");
-  kprintf ("====================================\n\n");
-
-  set_fg_color (WHITE);
-  kprintf ("$");
-*/
-  // test trap 
-  // int a = 4 / 0;
-
-  //kout_init(); //TODO
 
   for (;;)
     continue;
