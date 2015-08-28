@@ -18,6 +18,14 @@ void mem_test () {
 
 int main () {
 
+  unsigned long sp;
+  __asm__ volatile (
+    "mov %%esp,%0\n"
+    :"=m"(sp)
+    :
+  );
+  //printf ("%x\n",sp);
+
   printf ("\n############################\n");
   printf ("####### Hello World! #######\n");
   printf ("############################\n\n");
