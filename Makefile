@@ -24,7 +24,7 @@ SRC = arch/pm.c \
 			lib/stdio.c
 ASM = arch/crt0.S kernel/task.S arch/interrupt_handler.S
 OBJ = $(SRC:.c=.o) $(ASM:.S=.o)
-LINK_SCRIPT = tools/atomos.lds
+LINK_SCRIPT = arch/atomos.lds
 PWD := $(shell pwd)
 CD := cd
 
