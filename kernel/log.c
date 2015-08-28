@@ -7,7 +7,7 @@ static void fake_sleep () {
     ;
 }
 
-extern void klog (char* str_, u32 *arg_, u8 status_) {
+extern void _klog (char* str_, u32 *arg_, u8 status_) {
 
     static int number = 0;
     u8 state = status_ & 0x03;

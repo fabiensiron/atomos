@@ -2,6 +2,13 @@
 #define _LOG_H
 
 #include <include/stdio.h>
+#include <include/config.h>
+
+#ifdef DEBUG
+# define klog(str_,arg_,status_) do{_klog(str_,arg_,status_);}while(0)
+#else
+# define klog(str_,arg_,status_)
+#endif
 
 #define STATE_OK      0
 #define STATE_FAILED  1
@@ -11,6 +18,6 @@
 #define TYPE_STRING   8
 #define TYPE_UINT     4
 
-extern void klog (char* str_, u32 *arg_, u8 status_);
+extern void _klog (char* str_, u32 *arg_, u8 status_);
 
 #endif /* _LOG_H */
