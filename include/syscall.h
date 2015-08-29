@@ -3,6 +3,7 @@
 
 #include <include/kernel.h>
 #include <include/mem.h>
+#include <include/time.h>
 #include <drivers/i8042.h>
 #include <drivers/vga_text.h>
 #include <arch/pm.h>
@@ -10,6 +11,7 @@
 #define SYS_WRITE 1
 #define SYS_READ 2
 #define SYS_SBRK 3
+#define SYS_SLEEP 4
 
 extern void syscall (u32 num, u32 arg);
 
