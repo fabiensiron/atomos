@@ -57,6 +57,7 @@ extern void syscall (u32 num_, u32 arg_)
         {
           sys_sleep (arg_);
         }
+      break;
     default:
         {
           kprintf ("undefined syscall...\n");

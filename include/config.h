@@ -11,4 +11,6 @@
 
 # define USERLAND
 
+# define DEBUG 1
+
 #endif /* _CONFIG_H_ */
