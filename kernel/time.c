@@ -1,7 +1,5 @@
 #include <include/time.h>
 
-# define PAUSE_DELAY 10000000
-
 
 /* very useful before the init of the pit */
 void pause ()

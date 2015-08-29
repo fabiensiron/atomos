@@ -100,7 +100,6 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
 #ifdef USERLAND 
 
-  clear_screen ();
 
   if (magic == MULTIBOOT_BOOTLOADER_MAGIC && 
       info->mods_count == 1) {
@@ -113,6 +112,7 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
     klog ("jump to userland", NULL, STATE_OK);
     u32 loc_entry = (u32)entry;
     klog ("task entry",&loc_entry, STATE_NOTHING);
+    clear_screen ();
     load_task (loc_entry);
   } else {
     klog ("load user binary (ELF)", NULL, STATE_FAILED);
