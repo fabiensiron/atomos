@@ -10,7 +10,7 @@ PHDRS
 
 SECTIONS
 {
-  . = 0x4000 + SIZEOF_HEADERS;
+  . = 0x0 + SIZEOF_HEADERS;
 
   .text :
   {
