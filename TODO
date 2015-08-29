@@ -1,0 +1,7 @@
+kernel/ext2.c
+kernel/btrace.c
+drivers/gdb_stub.c
+bootloader/*
+drivers/vga_graphics.c
+drivers/fpu.c
+user/*
