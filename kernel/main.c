@@ -6,8 +6,10 @@
 #include <drivers/vga_text.h>
 #include <drivers/serial.h>
 #include <drivers/i8259.h>
+#include <drivers/i8253.h>
 #include <arch/ioport.h>
 #include <include/kernel.h>
+#include <include/time.h>
 #include <include/stdio.h>
 #include <include/string.h>
 #include <include/elf_loader.h>
@@ -17,10 +19,6 @@
 #include <include/stddef.h>
 #include <include/config.h>
 
-static void fake_sleep () {
-  for (int i = 0; i<10000000; i++)
-    ;
-}
 
 void kernel_main (unsigned long magic, multiboot_info_t* info) {
   set_bg_color (BLACK); 
@@ -78,6 +76,12 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   init_irq ();
   klog ("init hardware interrupt (IRQ)", NULL, STATE_OK);
 
+  pit_init ();
+  klog ("init timer", NULL, STATE_OK);
+
+  serial_init (); 
+  klog ("init serial", NULL, STATE_OK);
+
   /* set interrupts up */
 
   STI;
@@ -89,11 +93,10 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
   mem_init (); 
   klog ("init kernel memory", NULL, STATE_OK);
   
-  serial_init (); 
-  klog ("init serial", NULL, STATE_OK);
   
   u32 sys_nmb = 0x80;
   klog ("system call", &sys_nmb, STATE_NOTHING);
+
 
 #ifdef USERLAND 
 

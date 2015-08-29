@@ -9,4 +9,5 @@ static void enable_irq (int num_, u32 isr_) {
 extern void init_irq () {
   /* map keyboard */ 
   enable_irq (KEYBOARD, (u32)keyboard_IRQ);
+  enable_irq (PIT, (u32)pit_IRQ);
 }

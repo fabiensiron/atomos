@@ -4,6 +4,7 @@
 .extern panic 
 .extern refresh_ps2_controller
 .extern syscall
+.extern pit_handler
 
 .macro SAVE_REG 
   pusha
@@ -54,6 +55,15 @@ critical_exception:
 keyboard_IRQ:
   SAVE_REG
   call refresh_ps2_controller
+  movb $0x20, %al
+  outb %al, $0x20
+  RESTORE_REG
+  iret
+
+.globl pit_IRQ
+pit_IRQ:
+  SAVE_REG
+  call pit_handler 
   movb $0x20, %al
   outb %al, $0x20
   RESTORE_REG

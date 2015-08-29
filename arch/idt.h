@@ -7,6 +7,7 @@
 #include <include/syscall.h>
 #include <include/stdlib.h>
 #include <drivers/i8259.h>
+#include <drivers/i8253.h>
 #include <drivers/vga_text.h>
 
 #define SIZE_IDT 255

@@ -14,10 +14,12 @@ SRC = arch/pm.c \
 			kernel/elf_loader.c \
 			kernel/log.c \
 			kernel/mem.c \
+                        kernel/time.c \
 			kernel/syscall.c \
 			drivers/vga_text.c \
 			drivers/i8259.c \
 			drivers/i8042.c \
+                        drivers/i8253.c \
 			drivers/pio.c \
                         drivers/serial.c \
 			lib/string.c \
