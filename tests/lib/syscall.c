@@ -12,6 +12,11 @@ extern unsigned int read (char* buffer) {
   return SYSCALL (SYS_READ, buffer);
 }
 
+extern void _sleep (unsigned long t)
+{
+  SYSCALL (SYS_SLEEP, t);
+}
+
 extern void test () {
   printf ("\n");
   int a = SYSCALL (4,2);

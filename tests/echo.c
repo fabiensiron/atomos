@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 const int a = 6;
 
@@ -15,6 +16,11 @@ void mem_test () {
  // int* buf = malloc (sizeof(5));
 
 } 
+
+void sleep_test () {
+  sleep (5000);
+  printf ("\n");
+}
 
 int main () {
 
@@ -34,7 +40,7 @@ int main () {
     char buffer[80];
     read (buffer);
     if (buffer[0] == 't')
-      test ();
+      sleep_test ();
     else if (buffer[0] == 'm')
      mem_test();
     else if (buffer[0] == 'r'){

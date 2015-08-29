@@ -23,9 +23,11 @@
 #define SYS_WRITE 1
 #define SYS_READ  2
 #define SYS_SBRK  3
+#define SYS_SLEEP 4
 
 extern void write (char* str);
 extern unsigned int read (char* buffer);
 extern void* sbrk (unsigned int offset);
+extern void _sleep (unsigned long t);
 
 #endif /* _SYSCALL_H */
