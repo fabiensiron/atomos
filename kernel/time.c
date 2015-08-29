@@ -1,5 +1,15 @@
 #include <include/time.h>
 
+# define PAUSE_DELAY 10000000
+
+
+/* very useful before the init of the pit */
+void pause ()
+{
+  for (int i = 0; i < PAUSE_DELAY; i++)
+    ;
+}
+
 static void sleep_init () 
 {
   pit_reset_count ();
@@ -16,3 +26,5 @@ void sleep (u16 t_)
   sleep_init ();
   sleep_wait (t_);
 }
+
+

@@ -3,6 +3,7 @@
 
 #include <include/stdio.h>
 #include <include/config.h>
+#include <include/time.h>
 
 #ifdef DEBUG
 # define klog(str_,arg_,status_) do{_klog(str_,arg_,status_);}while(0)

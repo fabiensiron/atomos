@@ -2,11 +2,6 @@
 
 #define LOG_STATE_OFFSET 60
 
-static void fake_sleep () {
-  for (int i = 0; i < 10000000; i++)
-    ;
-}
-
 extern void _klog (char* str_, u32 *arg_, u8 status_) {
 
     static int number = 0;
@@ -49,7 +44,7 @@ extern void _klog (char* str_, u32 *arg_, u8 status_) {
   
     kprintf ("\n");
 
-    fake_sleep ();
+    pause ();
 
     set_bg_color (tmp_color.bg); 
     set_fg_color (tmp_color.fg);
