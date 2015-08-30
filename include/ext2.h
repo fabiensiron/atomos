@@ -2,8 +2,11 @@
 #define _EXT2_H_
 
 #include <include/kernel.h>
+#include <include/mem.h>
+#include <drivers/pio.h>
+#include <include/log.h>
 
-struct ext2_super_block {
+struct ext2_sb {
   u32 inodes_count;
   u32 blocks_count;
   u32 r_blocks_count;
@@ -34,7 +37,7 @@ struct ext2_super_block {
   u16 block_group_nr;
   u32 feature_compat;
   u32 feature_incompat;
-  u32 feature_ro_compat
+  u32 feature_ro_compat;
   u8 uuid[16];
   char volume_name[16];
   char last_mounted[64];
@@ -50,7 +53,7 @@ struct disk {
   struct ext2_group_desc *gd;
 };
 
-struct ext2_group_desc {
+struct ext2_gd {
   u32 block_bitmap;
   u32 inode_bitmap;
   u32 inode_table;
@@ -90,9 +93,19 @@ struct directory_entry {
   char name;
 } __attribute__((packed));
 
+struct ext2_disk {
+  int device;
+  struct ext2_sb *sb;
+  struct ext2_gd *gd;
+  u32 blocksize;
+  u16 groups;
+};
 
+struct ext2_disk disk;
 
-struct disk *ext2_get_disk_info (int);
-struct ext2_super_block *ext2_read_sb (int);
+extern int ext2_init (int);
+extern struct ext2_sb *ext2_read_sb (int);
+extern struct ext2_gd *ext2_read_gd ();
+extern struct ext2_inode *ext2_read_inode (int);
 
 #endif /* _EXT2_H_ */

@@ -9,7 +9,7 @@
 #define TEXT_FRAMEBUFFER_END   0xB8FA0
 #define TEXT_FRAMEBUFFER_NPB   16 
 
-extern struct cursor_t {
+struct cursor_t {
   int c; 
   int r;
 };
@@ -35,7 +35,7 @@ typedef enum {
   LIGHT_WHITE
 } text_color_e;
 
-extern struct text_color_t{
+struct text_color_t{
   text_color_e bg;
   text_color_e fg;
 };

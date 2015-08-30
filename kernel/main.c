@@ -18,9 +18,10 @@
 #include <include/mem.h>
 #include <include/stddef.h>
 #include <include/config.h>
+#include <include/ext2.h>
 
-
-void kernel_main (unsigned long magic, multiboot_info_t* info) {
+void kernel_main (unsigned long magic, multiboot_info_t* info) 
+{
   set_bg_color (BLACK); 
   set_fg_color (WHITE);
 
@@ -28,23 +29,40 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   write_text_vga ("kernel is booting...\n");
 
-  if (magic == MULTIBOOT_BOOTLOADER_MAGIC) {
-    klog ("boot with grub", NULL, STATE_NOTHING);
-    klog ("flags", &info->flags, STATE_NOTHING);
-    klog ("memory lower", &info->mem_lower, STATE_NOTHING);
-    klog ("memory upper", &info->mem_upper, STATE_NOTHING);
-    klog ("boot device", &info->boot_device, STATE_NOTHING);
-    klog ("command line", (u32*)info->cmdline, 
+  if (magic == MULTIBOOT_BOOTLOADER_MAGIC) 
+    {
+      klog ("boot with grub", NULL, STATE_NOTHING);
+      klog ("flags", &info->flags, STATE_NOTHING);
+      klog ("memory lower", &info->mem_lower, STATE_NOTHING);
+      klog ("memory upper", &info->mem_upper, STATE_NOTHING);
+      klog ("boot device", &info->boot_device, STATE_NOTHING);
+      klog ("command line", (u32*)info->cmdline, 
         STATE_NOTHING | TYPE_STRING);
-    klog ("modules number", &info->mods_count, 
+      klog ("modules number", &info->mods_count, 
         STATE_NOTHING | TYPE_UINT);
-    klog ("modules address", &info->mods_addr, STATE_NOTHING);
-    klog ("mmap length", &info->mmap_length, STATE_NOTHING);
-    klog ("mmap address", &info->mmap_addr, STATE_NOTHING);
-    klog ("drives length", &info->drives_length, STATE_NOTHING);
-    klog ("drives address", &info->drives_addr, STATE_NOTHING);
-  }
-
+      klog ("modules address", &info->mods_addr, STATE_NOTHING);
+      klog ("mmap length", &info->mmap_length, STATE_NOTHING);
+      klog ("mmap address", &info->mmap_addr, STATE_NOTHING);
+      klog ("drives length", &info->drives_length, STATE_NOTHING);
+      klog ("drives address", &info->drives_addr, STATE_NOTHING);
+    }
+  
+  if (info->drives_length != 0)
+    {
+      drive_t *drive_info = (drive_t *)info->drives_addr;
+      klog ("found multiboot drive info!", NULL, STATE_NOTHING);
+      klog ("drive size",&drive_info->size,STATE_NOTHING);
+      klog ("drive number",&drive_info->drive_number,STATE_NOTHING | SIZE_U8);
+      if (drive_info->drive_mode == DRIVE_MODE_CHS)
+        klog ("drive mode CHS",NULL,STATE_NOTHING);
+      else
+        klog ("drive mode LBA",NULL,STATE_NOTHING);
+      klog ("drive cylinders",&drive_info->drive_cylinders,STATE_NOTHING | SIZE_U16);
+      klog ("drive heads",&drive_info->drive_heads,STATE_NOTHING | SIZE_U8);
+      klog ("drive sectors",&drive_info->drive_sectors,STATE_NOTHING | SIZE_U8);
+      klog ("drive port 1",&drive_info->drive_port1,STATE_NOTHING | SIZE_U8);
+      klog ("drive port 2",&drive_info->drive_port2,STATE_NOTHING | SIZE_U8);
+    }
 
 
   /* set 32-bits intel protected mode */
@@ -92,6 +110,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info) {
 
   mem_init (); 
   klog ("init kernel memory", NULL, STATE_OK);
+
+  ext2_init (0);
+  klog ("init filesystem", NULL, STATE_OK);
   
   
   u32 sys_nmb = 0x80;

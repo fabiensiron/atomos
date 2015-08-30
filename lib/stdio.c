@@ -95,6 +95,7 @@ int vprintf (char* fmt_, va_list args_) {
       putc_i (fmt_[i]);
     }
   }
+  return 0;
 }
 
 int kprintf (char* fmt, ...) {

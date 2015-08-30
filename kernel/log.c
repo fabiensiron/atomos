@@ -12,16 +12,26 @@ extern void _klog (char* str_, u32 *arg_, u8 status_) {
 
     kprintf ("[0%i] %s", number, str_);
 
+
     if (arg_ != NULL) {
+      unsigned long arg;
+      
+      if (status_ & 0x20)
+        arg = *arg_ & 0x0000ffff;
+      else if (status_ & 0x40)
+        arg = *arg_ & 0x000000ff;
+      else
+        arg = *arg_;
+      
       switch (type) {
         case TYPE_STRING:
           kprintf (": %s", arg_);
           break;
         case TYPE_UINT:
-          kprintf (": %i", *arg_);
+          kprintf (": %i", arg);
           break;
         default:
-          kprintf (": %x", *arg_);
+          kprintf (": %x", arg);
           break;
       }
     }

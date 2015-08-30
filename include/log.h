@@ -19,6 +19,11 @@
 #define TYPE_STRING   8
 #define TYPE_UINT     4
 
+#define SIZE_U32      16
+#define SIZE_U16      32  
+#define SIZE_U8       64  
+
+
 extern void _klog (char* str_, u32 *arg_, u8 status_);
 
 #endif /* _LOG_H */

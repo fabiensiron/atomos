@@ -25,6 +25,7 @@ extern int pio_read (int drive_, int numblock_, int count_,
     buf_[idx*2] = (u8)tmp; 
     buf_[idx*2+1] = (u8)(tmp >> 8);
   }
+  return count;
 }
 
 extern int pio_write (int drive_, int numblock_, int count_,
