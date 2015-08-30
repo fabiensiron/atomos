@@ -14,6 +14,7 @@ SRC = arch/pm.c \
 			kernel/elf_loader.c \
 			kernel/log.c \
 			kernel/mem.c \
+                        kernel/ext2.c \
                         kernel/time.c \
 			kernel/syscall.c \
 			drivers/vga_text.c \
@@ -45,11 +46,14 @@ $(TARGET): $(OBJ)
 %.o: %.S
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
-boot:
+boot:  
 	$(shell cp tools/floppy atomos_floppy)
 	$(shell mcopy -i atomos_floppy ATOMOS ::/modules/k)
 	$(shell mcopy -i atomos_floppy tests/test ::/modules/rom)
-	qemu-system-i386 -fda atomos_floppy -serial stdio > DEBUG
+	qemu-system-i386 -fda atomos_floppy -hda tools/atomos.img -boot once=a -serial file:DEBUG -monitor stdio
+
+vdisk:
+	./tools/create_vdisk.sh 
 
 .PHONY: clean
 clean:
@@ -58,6 +62,7 @@ clean:
 	rm -rf drivers/*.o
 	rm -rf lib/*.o
 	rm -rf tests/*.o
+#	rm -rf tools/mnt/
 
 .PHONY: mrproper 
 mrproper: clean

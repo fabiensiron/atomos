@@ -1,0 +1,43 @@
+Configs for binaries, exemple:
+
+'/sbin/sh' wants 'PATH' variable
+'PATH' = read '/etc/sh/PATH'
+
+'/bin/moreOrLess' wants 'NAME_PLAYER' variable
+'NAME_PLAYER' = read '/etc/moreOrLess/NAME_PLAYER'
+
+format:
+  - every var is string except if it has a specifier.
+  Specifier is at line 0 and begins with '$'.
+  Specifier List: 
+    -'$bool'
+    -'$int'
+    -'$list'
+
+exemple:
+if '/sbin/sh' has muli-path variables '/bin' and '/sbin':
+
+### VAR ###
+$list
+/bin
+/sbin
+### END ###
+
+API in 'libAtom':
+  libAtom/config.h
+
+exemple:
+
+### C CODE ###
+# define PATH 'PATH'
+
+  int path;
+  Config config_path;
+  config_path = config_get (PATH)
+
+  if (config_getType (config_path) != CONFIG_INT)
+    abort ();
+  else
+    path = config_to_int (config_path);
+
+###   END  ###    

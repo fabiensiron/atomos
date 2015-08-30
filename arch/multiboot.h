@@ -95,6 +95,22 @@ typedef struct memory_map
   unsigned long type;
 } memory_map_t;
 
+# define DRIVE_MODE_LBA 1
+# define DRIVE_MODE_CHS 0
+
+typedef struct drive
+{
+  unsigned long size;
+  unsigned char drive_number;
+  unsigned char drive_mode;
+  unsigned short  drive_cylinders;
+  unsigned char drive_heads;
+  unsigned char drive_sectors;
+  unsigned char drive_port1;
+  unsigned char drive_port2;
+  unsigned char drive_port3;
+} drive_t;
+
 void dump_multiboot_info(multiboot_info_t *mbi);
 
 #endif /* __MULTIBOOT_H__ */
