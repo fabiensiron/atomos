@@ -6,6 +6,8 @@
 #include <drivers/pio.h>
 #include <include/log.h>
 
+# define EXT2_MAGIC 0xef53
+
 struct ext2_sb {
   u32 inodes_count;
   u32 blocks_count;
@@ -103,7 +105,9 @@ struct ext2_disk {
 
 struct ext2_disk disk;
 
-extern int ext2_init (int);
+extern int ext2_init (int,u32);
+extern int ext2_check_integrity ();
+
 extern struct ext2_sb *ext2_read_sb (int);
 extern struct ext2_gd *ext2_read_gd ();
 extern struct ext2_inode *ext2_read_inode (int);

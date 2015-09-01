@@ -1,7 +1,9 @@
 #include <include/ext2.h>
 
-# define SB_OFFSET 2048
-# define SB_SECTOR (SB_OFFSET/512)
+static u32 sb_offset;
+
+/* tmp define */
+# define SB_SECTOR sb_offset
 
 static u16 compute_groups (struct ext2_sb *sb) 
 {
@@ -13,8 +15,16 @@ static u16 compute_groups (struct ext2_sb *sb)
   return (a>b)?a:b;
 }
 
-extern int ext2_init (int device_)
+extern int ext2_check_integrity ()
 {
+  if (disk.sb->magic != EXT2_MAGIC)
+    return -1;
+  return 0;
+}
+
+extern int ext2_init (int device_, u32 entry)
+{
+  sb_offset = entry + 2;
   disk.device = device_;
   disk.sb = ext2_read_sb (disk.device);
   disk.blocksize = 1024 << disk.sb->log_block_size;

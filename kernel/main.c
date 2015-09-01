@@ -7,6 +7,7 @@
 #include <drivers/serial.h>
 #include <drivers/i8259.h>
 #include <drivers/i8253.h>
+#include <drivers/mbr.h>
 #include <arch/ioport.h>
 #include <include/kernel.h>
 #include <include/time.h>
@@ -111,12 +112,23 @@ void kernel_main (unsigned long magic, multiboot_info_t* info)
   mem_init (); 
   klog ("init kernel memory", NULL, STATE_OK);
 
-  ext2_init (0);
+  mbr_dump_info ();
+  if (mbr_check_boot_integrity() == -1)
+    panic ("no boot sector found !");
+
+  mbr_show_info ();
+  struct mbr_entry *part_info = mbr_find_bootable ();
+
+  ext2_init (0, part_info->lba_start);
+  if (ext2_check_integrity() == -1)
+    panic ("Unable to read ext2");
+
   klog ("init filesystem", NULL, STATE_OK);
   
   
   u32 sys_nmb = 0x80;
   klog ("system call", &sys_nmb, STATE_NOTHING);
+
 
 
 #ifdef USERLAND 
@@ -142,6 +154,9 @@ void kernel_main (unsigned long magic, multiboot_info_t* info)
   }
 #endif
 
+//  klog ("done...",NULL,STATE_NOTHING);
+  clear_screen ();
+  write_text_vga ("done...\n");
 
   for (;;)
     continue;

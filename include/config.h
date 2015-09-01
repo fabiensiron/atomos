@@ -9,8 +9,6 @@
 # define SERIAL_DEBUG 1
 # define VGA_DEBUG    2
 
-# define USERLAND
-
 # define DEBUG 1
 
 #endif /* _CONFIG_H_ */
