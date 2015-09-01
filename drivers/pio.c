@@ -8,14 +8,15 @@
       OUTB((u8)(numblock>>16),0x1F5); \
       OUTB(0xE0 | (drive << 4) | ((numblock>>24)&0x0f),0x1F6); \
   }
+  
 
 #define PIO_WRITE 0x30
 #define PIO_READ  0x20
 
-extern int pio_read (int drive_, int numblock_, int count_,
+extern int pio_read (int drive_, u32 lba_, int count_,
     u8* buf_) {
   u16 tmp;
-  PIO_COMMON (drive_,numblock_,count_);
+  PIO_COMMON (drive_,lba_,count_);
   OUTB(PIO_READ,0x1F7);
 
   while (!(INB(0x1F7)&0x8));
@@ -27,7 +28,7 @@ extern int pio_read (int drive_, int numblock_, int count_,
   }
   return count;
 }
-
+/*
 extern int pio_write (int drive_, int numblock_, int count_,
     u8* buf_) {
   u16 tmp;
@@ -42,4 +43,4 @@ extern int pio_write (int drive_, int numblock_, int count_,
   }
 }
 
-
+*/

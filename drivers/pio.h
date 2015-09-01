@@ -5,7 +5,7 @@
 #include <include/log.h>
 #include <arch/ioport.h>
 
-extern int pio_read (int drive_, int numblock_, int count_,
+extern int pio_read (int drive_, u32 lba_, int count_,
     u8* buf_);
 
 extern int pio_write (int drive_, int numblock_, int count_,
