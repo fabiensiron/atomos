@@ -23,6 +23,7 @@ SRC = arch/pm.c \
                         drivers/i8253.c \
 			drivers/pio.c \
                         drivers/serial.c \
+                        drivers/mbr.c \
 			lib/string.c \
 			lib/stdlib.c \
 			lib/stdio.c
@@ -46,14 +47,18 @@ $(TARGET): $(OBJ)
 %.o: %.S
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
-boot:  
-	$(shell cp tools/floppy atomos_floppy)
-	$(shell mcopy -i atomos_floppy ATOMOS ::/modules/k)
-	$(shell mcopy -i atomos_floppy tests/test ::/modules/rom)
-	qemu-system-i386 -fda atomos_floppy -hda tools/atomos.img -boot once=a -serial file:DEBUG -monitor stdio
+boot: vdisk 
+	qemu-system-i386 -hda tools/atomos.img -serial file:DEBUG
+	#$(shell cp tools/floppy atomos_floppy)
+	#$(shell mcopy -i atomos_floppy ATOMOS ::/modules/k)
+	#$(shell mcopy -i atomos_floppy tests/test ::/modules/rom)
+	#qemu-system-i386 -fda atomos_floppy -hda tools/atomos.img -boot once=a -serial file:DEBUG -monitor stdio
 
-vdisk:
-	./tools/create_vdisk.sh 
+rooot:
+	cp ./ATOMOS root/boot/atomos
+
+vdisk: rooot
+	cd tools/ && ./create_vdisk.sh 
 
 .PHONY: clean
 clean:

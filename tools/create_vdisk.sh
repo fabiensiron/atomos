@@ -16,9 +16,9 @@ do
   esac
 done
 
-ROOTDIR=root
-IMG_FILE=tools/atomos.img
-SECTOR_BEFORE_EXT2=2
+ROOTDIR=../root
+IMG_FILE=atomos.img
+SECTOR_BEFORE_EXT2=63
 SYSTEM_ID=83
 EXT2_PARTITION_SIZE=32000
 FAT32_PARTITION_SIZE=32000
@@ -61,14 +61,13 @@ create()
 EOF
 }
 
-create
-
+#create
 LOOP=`sudo kpartx -afv $IMG_FILE | head -n 1 | cut -d " " -f 3`
 sleep 1
 echo $LOOP
 sudo mkdir -p mnt/
 sudo mount /dev/mapper/$LOOP mnt/ 
-sudo cp -R $ROOTDIR mnt
+sudo cp -R $ROOTDIR/* mnt
 sudo umount mnt
 sudo rm -rf mnt
 sudo kpartx -d $IMG_FILE

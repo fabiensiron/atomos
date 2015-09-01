@@ -1,4 +1,0 @@
-title=Atomos
-root (hd0,0)
-kernel=/boot/atomos
-boot
