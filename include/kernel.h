@@ -20,7 +20,8 @@ typedef unsigned char bool_t;
 #define TRUE 1
 #define FALSE 0
 
-void panic (const char* msg);
+void panic ();
+void die (const char *msg);
 
 void* k_brk;
 void* brk;
