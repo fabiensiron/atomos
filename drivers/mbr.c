@@ -14,7 +14,7 @@ extern int mbr_dump_info ()
 
 static void partition_show_info (int i, struct mbr_entry *entry)
 {
-  kprintf ("<disk %i>", i);
+  kprintf ("<disk %i>\n", i);
   klog ("boot_id", &entry->boot_id, STATE_NOTHING | SIZE_U8); 
   klog ("system_id", &entry->system_id, STATE_NOTHING | SIZE_U8); 
   klog ("lba_start", &entry->lba_start, STATE_NOTHING); 
