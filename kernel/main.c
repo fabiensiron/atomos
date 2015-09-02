@@ -123,14 +123,16 @@ void kernel_main (unsigned long magic, multiboot_info_t* info)
   if (ext2_check_integrity() == -1)
     panic ("Unable to read ext2");
 
+
   klog ("init filesystem", NULL, STATE_OK);
   
   
   u32 sys_nmb = 0x80;
   klog ("system call", &sys_nmb, STATE_NOTHING);
 
-
-
+  int *a; 
+  a = (int *) kmalloc (sizeof(int));
+  
 #ifdef USERLAND 
 
 
