@@ -112,19 +112,19 @@ void kernel_main (unsigned long magic, multiboot_info_t* info)
   mem_init (); 
   klog ("init kernel memory", NULL, STATE_OK);
 
-  mbr_dump_info ();
-  if (mbr_check_boot_integrity() == -1)
-    panic ("no boot sector found !");
+  //  mbr_dump_info ();
+  //  if (mbr_check_boot_integrity() == -1)
+  //panic ("no boot sector found !");
 
-  mbr_show_info ();
-  struct mbr_entry *part_info = mbr_find_bootable ();
+  //  mbr_show_info ();
+  //  struct mbr_entry *part_info = mbr_find_bootable ();
 
-  ext2_init (0, part_info->lba_start);
-  if (ext2_check_integrity() == -1)
-    panic ("Unable to read ext2");
+  //  ext2_init (0, part_info->lba_start);
+  //  if (ext2_check_integrity() == -1)
+  //panic ("Unable to read ext2");
 
 
-  klog ("init filesystem", NULL, STATE_OK);
+  //  klog ("init filesystem", NULL, STATE_OK);
   
   
   u32 sys_nmb = 0x80;

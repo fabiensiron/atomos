@@ -47,12 +47,12 @@ $(TARGET): $(OBJ)
 %.o: %.S
 	$(CC) -o $@ $(CFLAGS) -I $(PWD) -c $<
 
-boot:# vdisk 
+boot:   
 	#qemu-system-i386 -hda tools/atomos.img -serial file:DEBUG
 	$(shell cp tools/floppy atomos_floppy)
 	$(shell mcopy -i atomos_floppy ATOMOS ::/modules/k)
 	$(shell mcopy -i atomos_floppy tests/test ::/modules/rom)
-	qemu-system-i386 -fda atomos_floppy -hda tools/atomos.img -boot once=a -serial file:DEBUG -monitor stdio
+	qemu-system-i386 -fda atomos_floppy -boot once=a -serial file:DEBUG -monitor stdio
 
 rooot:
 	cp ./ATOMOS root/boot/atomos
